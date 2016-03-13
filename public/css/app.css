@@ -1,0 +1,119 @@
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+footer {
+  margin-top: 20px;
+}
+#level2-view {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+}
+#mapid {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.control-panel {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 200px;
+  height: 300px;
+  border-radius: 5px;
+  border: 1px solid #1a64ad;
+  background-color: #fff;
+  padding: 10px;
+  z-index: 999;
+}
+.button {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  border: none;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  font-size: 14px;
+  cursor: pointer;
+  -webkit-transition: -webkit-filter 500ms ease-in-out, filter 500ms ease-in-out;
+  transition: filter 500ms ease-in-out;
+  -webkit-transition: -webkit-filter 500ms ease-in-out;
+  transition: -webkit-filter 500ms ease-in-out;
+}
+.button--blueborders {
+  background: white;
+  border: 1px solid #1a64ad;
+}
+.button--blue {
+  background: #1a64ad;
+}
+.button--gray {
+  background: #e8ebed;
+}
+.button--brown {
+  background: #d18100;
+}
+.button--disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.button__text {
+  display: inline-block;
+  vertical-align: middle;
+  color: #1d64ad;
+  text-decoration: none;
+  padding: 8px 20px;
+  line-height: 1;
+}
+.button__text--blueborders {
+  color: #1a64ad;
+}
+.button__text--changepassword {
+  padding: 8px 0;
+}
+.button__text--padding-free {
+  padding: 0;
+}
+.button__text--equal-padding {
+  padding: 8px;
+}
+.button__text--white {
+  color: white;
+}
+.button__text--in-gray {
+  color: #1f324d;
+}
+.button__text--circle-help {
+  font-size: 24px;
+  margin-right: 20px;
+}
+.button__text--circle-help i {
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+.button-close {
+  display: inline-block;
+  vertical-align: middle;
+  cursor: pointer;
+  font-size: 22px;
+  font-size: 1.375rem;
+  font-weight: 200;
+  color: #828282;
+}
+.button-close:before {
+  content: '\00D7';
+}

@@ -1,0 +1,19 @@
+{
+    "name": "contacts"
+  , "version": "0.0.1"
+  , "private": true
+  , "dependencies": {
+      "express": ">= 3.1.0"
+    , "jade": ">= 0.28.1"
+    , "mongoose": ">= 3.5.6"
+    , "serve-static": "*"
+    , "method-override": "*"
+    , "body-parser": "*"
+    , "multiparty": "*"
+    , "express-session": "*"
+    , "connect-redis": "*"
+    , "node-redis": "*"
+    , "cookie-parser": "*"
+    , "errorhandler": "*"
+  }
+}
