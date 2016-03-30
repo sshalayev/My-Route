@@ -50,6 +50,14 @@ app.config(['ngDialogProvider', '$stateProvider', '$urlRouterProvider', '$locati
                 $rootScope.pageTitle = 'My Route';
             }
         })
+        .state("main.test", {
+            controller: 'TestController',
+            templateUrl: '/partials/test.html',
+            url: "test/",
+            onEnter: function ($rootScope) {
+                $rootScope.pageTitle = 'My Test';
+            }
+        })
 }]);
 
 app.run(
