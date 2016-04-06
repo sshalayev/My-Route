@@ -1,0 +1,23 @@
+.grid-cell {
+    width: 100px;
+    height: 20px;
+}
+.grid-header {
+    flex: auto
+}
+.grid-row {
+    display: flex;
+    align-items: center;
+    flex: 0 0 20px;
+}
+.grid-row + .grid-row {
+    background-color: #e0e0e0;
+}
+.grid {
+    display: flex;
+    flex-direction: column;
+    width: 800px;
+    height: 600px;
+    border: 1px solid #cccccc;
+    margin: 10px;
+}

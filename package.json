@@ -15,5 +15,7 @@
     , "node-redis": "*"
     , "cookie-parser": "*"
     , "errorhandler": "*"
+    , "nlogger": "*"
+    , "ejs": "*"
   }
 }

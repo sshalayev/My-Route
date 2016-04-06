@@ -4,4 +4,24 @@ app.controller('TestController', ['$scope', function ($scope) {
         {name: 'item2', func: null},
         {name: 'item3', func: null}
     ];
+    $scope.myData = [
+        {
+            "firstName": "Cox",
+            "lastName": "Carney",
+            "company": "Enormo",
+            "employed": true
+        },
+        {
+            "firstName": "Lorraine",
+            "lastName": "Wise",
+            "company": "Comveyer",
+            "employed": false
+        },
+        {
+            "firstName": "Nancy",
+            "lastName": "Waters",
+            "company": "Fuelton",
+            "employed": false
+        }
+    ];
 }]);

@@ -117,3 +117,7 @@ footer {
 .button-close:before {
   content: '\00D7';
 }
+.data-grid {
+  width: 800px;
+  height: 600px;
+}

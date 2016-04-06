@@ -10,7 +10,8 @@ var app = angular.module('awmApp', [
     'ngAnimate',
     'angular-storage',
     'nemLogging',
-    'ui-leaflet'
+    'ui-leaflet',
+    'ui.grid'
 ]);
 
 app.config(['ngDialogProvider', '$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider', function (ngDialogProvider, $stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
