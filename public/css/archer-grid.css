@@ -1,10 +1,22 @@
 .grid {
     display: flex;
-    height: 600px;
-    border: 1px solid #cccccc;
-    margin: 12px;
+    height: 100vh;
+    flex-direction: column;
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 10px;
+    font-size: 12px;
+}
+.grid-header {
+    flex: auto;
+    display: flex;
+}
+.grid-body {
+    flex: auto;
+    display: flex;
+    overflow-y: auto;
+}
+.grid-footer {
+    flex: 0 0 60px;
+    background-color: #e0e0e0;
 }
 .grid-column {
     display: flex;
@@ -64,4 +76,8 @@
 }
 .rowspan3 {
     flex: 0 0 83px;
+}
+.grid-toolbox {
+    flex: 0 1 70px;
+    background-color: #62c462;
 }

@@ -34,7 +34,7 @@ app.directive('aGrid', function (dataService) {
         return cell;
     }
 
-    function addColumn (id, values, span) {
+    function addHeaderColumn (id, span) {
         var column = addElement(id, 'grid-column');
 
         for (var i = 0; i < span; i++) {
@@ -42,6 +42,12 @@ app.directive('aGrid', function (dataService) {
 
             column.append(addElement(cell_id, 'grid-vcell grid-column-header'));
         }
+
+        return column;
+    }
+
+    function addBodyColumn (id, values) {
+        var column = addElement(id, 'grid-column');
 
         for (var i = 0; i < values.length; i++) {
             var cell_id = id + '_cell' + i;
@@ -75,8 +81,8 @@ app.directive('aGrid', function (dataService) {
             }
         }, points);
         range_elem.css({
-            width: (points.right - points.left - 7) + 'px',
-            height: (points.bottom - points.top - 7) + 'px'
+            width: (points.right - points.left - 6) + 'px',
+            height: (points.bottom - points.top - 6) + 'px'
         });
         return range_elem;
     }
@@ -204,11 +210,16 @@ app.directive('aGrid', function (dataService) {
     function renderGridC (element, data) {
         var groups = data.filter(function (column) { return column.type == 'group'});
         var span = groups.length > 1 ? 3 : groups.length == 1 ? 2 : 1;
+        var grid_header = addElement('grid-header', 'grid-header');
+        var grid_body = addElement('grid-body', 'grid-body');
+        var grid_footer = addElement('grid-footer', 'grid-footer');
+        element.append(grid_header).append(grid_body).append(grid_footer);
 
         for (var i = 0; i < data.length; i++) {
             var range = [];
             if (data[i].type !== 'group' && data[i].type !== 'total') {
-                element.append(addColumn(data[i].id, data[i].values, span));
+                grid_header.append(addHeaderColumn(data[i].id, span));
+                grid_body.append(addBodyColumn(data[i].id, data[i].values));
                 if (!data[i].group) {
                     for (var j = 0; j < span; j++) {
                         range.push(data[i].id + '_header' + j);

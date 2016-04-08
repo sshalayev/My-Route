@@ -12,6 +12,8 @@ input:focus {
 }
 .test-body {
     flex: auto;
+    display: flex;
+    flex-direction: column;
 }
 .test-menu {
     border-bottom: 1px solid #fff;
