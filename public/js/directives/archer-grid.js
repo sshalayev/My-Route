@@ -34,11 +34,15 @@ app.directive('aGrid', function (dataService) {
         return cell;
     }
 
+    function getElement (id) {
+        return $(document.getElementById(id));
+    }
+
     function addHeaderColumn (id, span) {
         var column = addElement(id, 'grid-column');
 
         for (var i = 0; i < span; i++) {
-            var cell_id = id + '_header' + i;
+            var cell_id = id + '_' + i;
 
             column.append(addElement(cell_id, 'grid-vcell grid-column-header'));
         }
@@ -50,11 +54,18 @@ app.directive('aGrid', function (dataService) {
         var column = addElement(id, 'grid-column');
 
         for (var i = 0; i < values.length; i++) {
-            var cell_id = id + '_cell' + i;
+            var cell_id = id + '_' + i;
             column.append(addElement(cell_id, 'grid-vcell', values[i]));
         }
 
         return column;
+    }
+
+    function getGroupedValues (group, data) {
+        return data
+            .filter(function (column) { return column.group == group.id })
+            .map(function (v) { return v.values})
+            .reduce(function (a, b) { return sumArrays(a, b)});
     }
 
     function addRange (id, range, css_class, value) {
@@ -66,7 +77,7 @@ app.directive('aGrid', function (dataService) {
         };
 
         for (var i = 0; i < range.length; i++) {
-            var cell = $(document.getElementById(range[i]));
+            var cell = getElement(range[i]);
             points.top.push(cell[0].offsetTop);
             points.left.push(cell[0].offsetLeft);
             points.bottom.push(cell[0].offsetTop + cell[0].offsetHeight);
@@ -82,7 +93,7 @@ app.directive('aGrid', function (dataService) {
         }, points);
         range_elem.css({
             width: (points.right - points.left - 6) + 'px',
-            height: (points.bottom - points.top - 6) + 'px'
+            height: (points.bottom - points.top - 7) + 'px'
         });
         return range_elem;
     }
@@ -112,12 +123,22 @@ app.directive('aGrid', function (dataService) {
         return results;
     }
 
-    function collapseGroup (data, group_id) {
-        var group = findGroup(data, group_id)[0];
-        var group_columns = findGroup(data, group.values);
-        var group_values = group_columns.map(function (column) { return column.values }).reduce(function (a, b) { return sumArrays(a, b)});
+    function collapseGroup (group) {
+        var selectors = group.values.map(function (v) { return '#' + v + '_header, #' + v + '_body' }).join(', ');
+        console.log(selectors);
+        var group_elements = $(document.querySelectorAll(selectors)); //.map(function(v) {return $(v)});
+        console.log(group_elements);
+        group_elements.addClass('grid-column-hidden');
+        getElement(group.id + '_merged_header').removeClass('grid-column-hidden');
+        getElement(group.id + '_merged_body').removeClass('grid-column-hidden');
+    }
 
-
+    function expandGroup (group) {
+        var selectors = group.values.map(function (v) { return '#' + v }).join(', ');
+        var group_elements = document.querySelectorAll(selectors).map(function(v) {return $(v)});
+        group_elements.removeClass('grid-column-hidden');
+        getElement(group.id + '_merged_header').addClass('grid-column-hidden');
+        getElement(group.id + '_merged_body').addClass('grid-column-hidden');
     }
 
     function renderGridA(element) {
@@ -188,7 +209,7 @@ app.directive('aGrid', function (dataService) {
 
                 for (var n = 0; n < data[i].values.length; n++) {
                     var child_id = data[i].values[n];
-                    var child_column = $(document.getElementById(child_id));
+                    var child_column = getElement(child_id);
                     group_width += child_column[0].offsetWidth;
                 }
                 group_headers[l].addClass('grid-group-header');
@@ -197,9 +218,9 @@ app.directive('aGrid', function (dataService) {
                 group_headers[l].text(data[i].name);
 
                 if (data[i].type == 'total') {
-                    container = $(document.getElementById(data[i].values[0] + '_header0'))
+                    container = getElement(data[i].values[0] + '_header0');
                 } else {
-                    container = $(document.getElementById(data[i].values[0] + '_header' + (span-2)));
+                    container = getElement(data[i].values[0] + '_header' + (span-2));
                 }
 
                 container.append(group_headers[l]);
@@ -218,17 +239,41 @@ app.directive('aGrid', function (dataService) {
         for (var i = 0; i < data.length; i++) {
             var range = [];
             if (data[i].type !== 'group' && data[i].type !== 'total') {
-                grid_header.append(addHeaderColumn(data[i].id, span));
-                grid_body.append(addBodyColumn(data[i].id, data[i].values));
+                grid_header.append(addHeaderColumn(data[i].id + '_header', span));
+                grid_body.append(addBodyColumn(data[i].id + '_body', data[i].values));
                 if (!data[i].group) {
                     for (var j = 0; j < span; j++) {
-                        range.push(data[i].id + '_header' + j);
+                        range.push(data[i].id + '_header_' + j);
                     }
-                    $(document.getElementById(data[i].id + '_header0')).append(addRange(data[i].id + 'header', range, 'grid-group-header grid-centered', data[i].name));
+                    getElement(data[i].id + '_header_0').append(addRange(data[i].id + '_header', range, 'grid-group-header grid-centered', data[i].name));
                 } else {
-                    $(document.getElementById(data[i].id + '_header' + (span-1))).text(data[i].name).addClass('grid-centered');
+                    getElement(data[i].id + '_header_' + (span-1)).append(addRange(data[i].id + '_header', [data[i].id + '_header_' + (span-1)], 'grid-group-header grid-centered', data[i].name));
                 }
 
+            } else {
+                getElement(data[i].values[0] + '_header').before(addHeaderColumn(data[i].id + '_merged_header', span).addClass('grid-column-hidden'));
+                getElement(data[i].values[0] + '_body').before(addBodyColumn(data[i].id + '_merged_body', getGroupedValues(data[i], data)).addClass('grid-column-hidden'));
+
+                var row_num = data[i].type == 'group' ? (span - 2) : 0;
+                for (var j = 0; j < data[i].values.length; j++) {
+                    range.push(data[i].values[j] + '_header_' + row_num);
+                }
+                var group_header = addRange(data[i].id + '_title_header', range, 'grid-group-header grid-centered', data[i].name);
+                group_header.attr('collapsed', false);
+                getElement(data[i].values[0] + '_header_' + row_num).append(group_header);
+
+
+
+                group_header.on('dblclick', {group: angular.merge({}, data[i])}, function (event) {
+                    console.log(event.data.group);
+                    if ($(event.currentTarget).attr('collapsed') == "true") {
+                        expandGroup(event.data.group);
+                        $(event.currentTarget).attr('collapsed', false);
+                    } else {
+                        collapseGroup(event.data.group);
+                        $(event.currentTarget).attr('collapsed', true);
+                    }
+                });
             }
         }
     }

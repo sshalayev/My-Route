@@ -4,9 +4,9 @@
     flex-direction: column;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 12px;
+    transition: all 0.2s ease-out;
 }
 .grid-header {
-    flex: auto;
     display: flex;
 }
 .grid-body {
@@ -50,6 +50,12 @@
     background-color: #1f324d;
     color: #fff;
     border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+}
+.grid-column-hidden {
+    display: none;
+    transition: all 0.2s ease-out;
 }
 .grid-hcell {
     flex: 0 0 100px;
