@@ -87,26 +87,28 @@ app.directive('aGrid', function (dataService, $lstore) {
 
         for (var i = 0; i < range.length; i++) {
             var cell = getElement(range[i]);
-            points.top.push(cell[0].offsetTop);
-            points.left.push(cell[0].offsetLeft);
-            points.bottom.push(cell[0].offsetTop + cell[0].offsetHeight);
-            points.right.push(cell[0].offsetLeft + cell[0].offsetWidth);
+            if (cell) {
+                points.top.push(cell[0].offsetTop);
+                points.left.push(cell[0].offsetLeft);
+                points.bottom.push(cell[0].offsetTop + cell[0].offsetHeight);
+                points.right.push(cell[0].offsetLeft + cell[0].offsetWidth);
+            }
         }
-        console.log(angular.copy(points, {}));
+        //console.log(angular.copy(points, {}));
         angular.forEach(points, function (values, key) {
             if (key == 'top' || key == 'left') {
                 this[key] = values.reduce(function (a, b) { return a > b ? b : a });
             } else {
-                this[key] = values.reduce(function (a, b) { return a > b ? a : b });
+                this[key] = values.reduce(function (a, b) { return a <= b ? b : a });
             }
         }, points);
-
+        console.log(points);
         //var selectors = range.map(function (v) {return '#' + v}).join(', ');
         //var dimensions = document.querySelectorAll(selectors).getBoundingClientRect();
         for (var i = 0; i < range.length; i++) {
             var e = document.getElementById(range[i]);
             var dim = e.getBoundingClientRect();
-            console.log(dim);
+            //console.log(dim);
         }
 
 
@@ -124,18 +126,20 @@ app.directive('aGrid', function (dataService, $lstore) {
         return results;
     }
 
-    function findGroup (data, group_id) {
-        var results = [];
-
-        if (!angular.isArray(group_id)) {
-            group_id = [group_id];
-        }
-        for (var i = 0; i < data.length; i++) {
-            if (group_id.indexOf(data[i].id) > -1) {
-                results.push(data[i]);
+    function sumRects(rect1, rect2) {
+        var extr = {};
+        angular.forEach(rect1, function (val, key) {
+            if (key == 'top' || key == 'left') {
+                this[key] = val < rect2[key] ? val : rect2[key];
+            } else {
+                this[key] = val >= rect2[key] ? val : rect2[key];
             }
-        }
-        return results;
+        }, extr);
+
+        return {
+            width: extr.right - extr.left,
+            height: extr.bottom - extr.top
+        };
     }
 
     function toggleGroup (group, total) {
