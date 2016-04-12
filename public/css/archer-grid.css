@@ -24,6 +24,7 @@
     flex: 0 0 100px;
     border-right: 1px solid #ccc;
     margin: 0;
+    transition: all 0.2s ease-out;
 }
 .grid-row {
     display: flex;
@@ -54,7 +55,9 @@
     cursor: pointer;
 }
 .grid-column-hidden {
-    display: none;
+    overflow: hidden;
+    flex: 0 0 0;
+    border: 0;
     transition: all 0.2s ease-out;
 }
 .grid-hcell {

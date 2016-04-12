@@ -46,7 +46,7 @@ app.service('dataService', function () {
         {id: 'col8', name: 'index', type: 'normal', group: null, values: ['abc', 'dev', 'stg', 'prg', 'com', 'pst']},
         {id: 'group0', name: 'Group 1', type: 'group', group: 'total', values: ['col2', 'col3', 'col4']},
         {id: 'group1', name: 'Group 2', type: 'group', group: 'total', values: ['col5', 'col6', 'col7']},
-        {id: 'total', name: 'Total', type: 'total', group: null, values: ['col2', 'col3', 'col4', 'col5', 'col6', 'col7']}
+        {id: 'total', name: 'Total', type: 'total', group: null, values: ['group0', 'group1']}
     ]
 
 });

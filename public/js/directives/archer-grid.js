@@ -1,4 +1,4 @@
-app.directive('aGrid', function (dataService) {
+app.directive('aGrid', function (dataService, $lstore) {
     if (!$) {var $ = angular.element}
 
     var levels = [];
@@ -69,9 +69,18 @@ app.directive('aGrid', function (dataService) {
     }
 
     function addRange (id, range, css_class, value) {
-        console.log(range);
+        console.log('Range: ' + range);
         var range_elem = addElement(id, css_class, value);
-        //[top, left, bottom, right]
+        var points = getRangeDimension(range);
+
+        range_elem.css({
+            width: (points.right - points.left - 6) + 'px',
+            height: (points.bottom - points.top - 7) + 'px'
+        });
+        return range_elem;
+    }
+
+    function getRangeDimension (range) {
         var points = {
             top: [], left: [], bottom: [], right: []
         };
@@ -83,7 +92,7 @@ app.directive('aGrid', function (dataService) {
             points.bottom.push(cell[0].offsetTop + cell[0].offsetHeight);
             points.right.push(cell[0].offsetLeft + cell[0].offsetWidth);
         }
-
+        console.log(angular.copy(points, {}));
         angular.forEach(points, function (values, key) {
             if (key == 'top' || key == 'left') {
                 this[key] = values.reduce(function (a, b) { return a > b ? b : a });
@@ -91,11 +100,17 @@ app.directive('aGrid', function (dataService) {
                 this[key] = values.reduce(function (a, b) { return a > b ? a : b });
             }
         }, points);
-        range_elem.css({
-            width: (points.right - points.left - 6) + 'px',
-            height: (points.bottom - points.top - 7) + 'px'
-        });
-        return range_elem;
+
+        //var selectors = range.map(function (v) {return '#' + v}).join(', ');
+        //var dimensions = document.querySelectorAll(selectors).getBoundingClientRect();
+        for (var i = 0; i < range.length; i++) {
+            var e = document.getElementById(range[i]);
+            var dim = e.getBoundingClientRect();
+            console.log(dim);
+        }
+
+
+        return points;
     }
 
     function sumArrays(arr1, arr2) {
@@ -123,22 +138,41 @@ app.directive('aGrid', function (dataService) {
         return results;
     }
 
-    function collapseGroup (group) {
-        var selectors = group.values.map(function (v) { return '#' + v + '_header, #' + v + '_body' }).join(', ');
-        console.log(selectors);
-        var group_elements = $(document.querySelectorAll(selectors)); //.map(function(v) {return $(v)});
-        console.log(group_elements);
-        group_elements.addClass('grid-column-hidden');
-        getElement(group.id + '_merged_header').removeClass('grid-column-hidden');
-        getElement(group.id + '_merged_body').removeClass('grid-column-hidden');
-    }
+    function toggleGroup (group, total) {
+        var expanded = $lstore.get(group.id);
 
-    function expandGroup (group) {
-        var selectors = group.values.map(function (v) { return '#' + v }).join(', ');
-        var group_elements = document.querySelectorAll(selectors).map(function(v) {return $(v)});
-        group_elements.removeClass('grid-column-hidden');
-        getElement(group.id + '_merged_header').addClass('grid-column-hidden');
-        getElement(group.id + '_merged_body').addClass('grid-column-hidden');
+        var title = getElement(group.id + '_title_header');
+        var row_num = title.parent().attr('id').replace(/^.+(\d+)$/i, '$1');
+        var parent = getElement(group.values[expanded] + '_header_' + row_num);
+
+        var range = group.values.map(function (v) {return v + '_header_' + row_num});
+        var points = getRangeDimension(range);
+
+        var childs = group.values.slice(1);
+        var selectors = childs.map(function (v) { return '#' + v + '_header, #' + v + '_body' }).join(', ');
+
+        $(document.querySelectorAll(selectors)).toggleClass('grid-column-hidden');
+        getElement(group.id + '_header').toggleClass('grid-column-hidden');
+        getElement(group.id + '_body').toggleClass('grid-column-hidden');
+
+        title.removeAttr('style');
+        title.css({
+            width: (points.right - points.left - 6) + 'px',
+            height: (points.bottom - points.top - 7) + 'px'
+        });
+        title.detach();
+        parent.append(title);
+
+        if (total) {
+            var total_title = getElement(total.id);
+            range = total.values.map(function (v) {return v + '_header_0'});
+            points = getRangeDimension(range);
+            total_title.removeAttr('style');
+            total_title.css({
+                width: (points.right - points.left - 6) + 'px',
+                height: (points.bottom - points.top - 7) + 'px'
+            });
+        }
     }
 
     function renderGridA(element) {
@@ -229,8 +263,18 @@ app.directive('aGrid', function (dataService) {
     }
 
     function renderGridC (element, data) {
-        var groups = data.filter(function (column) { return column.type == 'group'});
-        var span = groups.length > 1 ? 3 : groups.length == 1 ? 2 : 1;
+        var span = 1;
+        var _data = data.reduce(function (obj, col) {
+            obj[col.id] = col;
+            return obj;
+        }, {});
+        var totals = data.filter(function (column) { return column.type == 'total'})
+            .map(function (total) { return total.id });
+        var groups = data.filter(function (column) { return column.type == 'group'})
+            .map(function (group) { return group.id });
+
+        span = totals.length > 0 ? 3 : groups.length > 0 ? 2 : 1;
+
         var grid_header = addElement('grid-header', 'grid-header');
         var grid_body = addElement('grid-body', 'grid-body');
         var grid_footer = addElement('grid-footer', 'grid-footer');
@@ -238,6 +282,8 @@ app.directive('aGrid', function (dataService) {
 
         for (var i = 0; i < data.length; i++) {
             var range = [];
+            var expanded;
+            var total_full = [];
             if (data[i].type !== 'group' && data[i].type !== 'total') {
                 grid_header.append(addHeaderColumn(data[i].id + '_header', span));
                 grid_body.append(addBodyColumn(data[i].id + '_body', data[i].values));
@@ -251,28 +297,44 @@ app.directive('aGrid', function (dataService) {
                 }
 
             } else {
-                getElement(data[i].values[0] + '_header').before(addHeaderColumn(data[i].id + '_merged_header', span).addClass('grid-column-hidden'));
-                getElement(data[i].values[0] + '_body').before(addBodyColumn(data[i].id + '_merged_body', getGroupedValues(data[i], data)).addClass('grid-column-hidden'));
+                if ($lstore.get(data[i].id)) {
+                    expanded = $lstore.get(data[i].id);
+                } else {
+                    expanded = 1;
+                    $lstore.set(data[i].id, 1);
+                }
+                data[i].values.unshift(data[i].id);
+                if (data[i].type == 'total') {
+                    data[i].values = data[i].values.map(function (val) {
+                        if (_data[val].type == 'group') {
+                            return _data[val].values;
+                        } else {
+                            return [val];
+                        }
+                    }).reduce(function (a,b) {return a.concat(b)});
+
+                }
+                getElement(data[i].values[1] + '_header').before(addHeaderColumn(data[i].id + '_header', span).addClass('grid-column-hidden'));
+                getElement(data[i].values[1] + '_body').before(addBodyColumn(data[i].id + '_body', getGroupedValues(data[i], data)).addClass('grid-column-hidden'));
 
                 var row_num = data[i].type == 'group' ? (span - 2) : 0;
                 for (var j = 0; j < data[i].values.length; j++) {
                     range.push(data[i].values[j] + '_header_' + row_num);
                 }
                 var group_header = addRange(data[i].id + '_title_header', range, 'grid-group-header grid-centered', data[i].name);
-                group_header.attr('collapsed', false);
-                getElement(data[i].values[0] + '_header_' + row_num).append(group_header);
+                getElement(data[i].values[expanded] + '_header_' + row_num).append(group_header);
 
 
-
-                group_header.on('dblclick', {group: angular.merge({}, data[i])}, function (event) {
-                    console.log(event.data.group);
-                    if ($(event.currentTarget).attr('collapsed') == "true") {
-                        expandGroup(event.data.group);
-                        $(event.currentTarget).attr('collapsed', false);
-                    } else {
-                        collapseGroup(event.data.group);
-                        $(event.currentTarget).attr('collapsed', true);
-                    }
+                group_header.on('dblclick',
+                    {
+                        group: angular.merge({}, data[i]),
+                        total: angular.merge({}, _data[data[i].group])
+                    },
+                    function (event) {
+                        var elem = $(event.currentTarget);
+                        var expanded = $lstore.get(event.data.group.id);
+                        $lstore.set(event.data.group.id, (expanded == 0 ? 1 : 0));
+                        toggleGroup(event.data.group, event.data.total);
                 });
             }
         }
