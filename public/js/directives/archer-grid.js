@@ -74,8 +74,8 @@ app.directive('aGrid', function (dataService, $lstore) {
         var points = getRangeDimension(range);
 
         range_elem.css({
-            width: (points.right - points.left - 6) + 'px',
-            height: (points.bottom - points.top - 7) + 'px'
+            width: (points.right - points.left) + 'px',
+            height: (points.bottom - points.top - 1) + 'px'
         });
         return range_elem;
     }
@@ -94,7 +94,6 @@ app.directive('aGrid', function (dataService, $lstore) {
                 points.right.push(cell[0].offsetLeft + cell[0].offsetWidth);
             }
         }
-        //console.log(angular.copy(points, {}));
         angular.forEach(points, function (values, key) {
             if (key == 'top' || key == 'left') {
                 this[key] = values.reduce(function (a, b) { return a > b ? b : a });
@@ -102,15 +101,6 @@ app.directive('aGrid', function (dataService, $lstore) {
                 this[key] = values.reduce(function (a, b) { return a <= b ? b : a });
             }
         }, points);
-        console.log(points);
-        //var selectors = range.map(function (v) {return '#' + v}).join(', ');
-        //var dimensions = document.querySelectorAll(selectors).getBoundingClientRect();
-        for (var i = 0; i < range.length; i++) {
-            var e = document.getElementById(range[i]);
-            var dim = e.getBoundingClientRect();
-            //console.log(dim);
-        }
-
 
         return points;
     }
@@ -142,130 +132,78 @@ app.directive('aGrid', function (dataService, $lstore) {
         };
     }
 
+    function findFirstVisibleChild (values) {
+        if (!angular.isArray(values)) return null;
+
+        for (var i = 0; i < values.length; i++) {
+            var elem = getElement(values[i] + '_header');
+            if (!elem.hasClass('grid-column-hidden')) {
+                return values[i];
+            }
+        }
+        return null;
+    }
+
     function toggleGroup (group, total) {
         var expanded = $lstore.get(group.id);
+        var struct = $lstore.get('struct');
 
         var title = getElement(group.id + '_title_header');
         var row_num = title.parent().attr('id').replace(/^.+(\d+)$/i, '$1');
-        var parent = getElement(group.values[expanded] + '_header_' + row_num);
 
         var childs = group.values.slice(1);
-        var selectors = childs.map(function (v) { return '#' + v + '_header, #' + v + '_body' }).join(', ');
+        var selectors = childs.filter(function (v) {
+            var elem_expanded = 1;
+            var elem = getElement(v + '_header');
+            var elem_state = $lstore.get(v);
+            if (elem.hasClass('grid-column-hidden')) {
+                elem_expanded = 0;
+            }
+            if (struct[v].type == 'group') {
+                elem_state = angular.isDefined(elem_state) ? elem_state : 1;
+                struct[v].expanded = elem_state == 0 ? 1 : 0;
+            }
+
+            if (expanded == 0) {
+                return expanded !== elem_expanded;
+            } else {
+                return struct[v].expanded !== 1;
+            }
+
+
+        }).map(function (v) {
+            return '#' + v + '_header, #' + v + '_body'
+        }).join(', ');
+        console.log(selectors);
 
         $(document.querySelectorAll(selectors)).toggleClass('grid-column-hidden');
         getElement(group.id + '_header').toggleClass('grid-column-hidden');
         getElement(group.id + '_body').toggleClass('grid-column-hidden');
-        title.detach();
-        parent.append(title);
 
         getElement(group.id + '_header').on('transitionend', function (event) {
             var range = group.values.map(function (v) {return v + '_header_' + row_num});
             var points = getRangeDimension(range);
             title.removeAttr('style');
             title.css({
-                width: (points.right - points.left - 14) + 'px',
-                height: (points.bottom - points.top - 7) + 'px'
+                width: (points.right - points.left - 1 + expanded) + 'px',
+                height: (points.bottom - points.top - 1) + 'px'
             });
+            title.detach();
+            getElement(findFirstVisibleChild(group.values) + '_header_' + row_num).append(title);
 
-
-            if (total) {
-                var total_title = getElement(total.id);
+            if (Object.keys(total).length > 0) {
+                var total_title = getElement(total.id + '_title_header');
                 range = total.values.map(function (v) {return v + '_header_0'});
                 points = getRangeDimension(range);
                 total_title.removeAttr('style');
                 total_title.css({
-                    width: (points.right - points.left - 6) + 'px',
-                    height: (points.bottom - points.top - 7) + 'px'
+                    width: (points.right - points.left - 1 + expanded) + 'px',
+                    height: (points.bottom - points.top - 1) + 'px'
                 });
+                total_title.detach();
+                getElement(findFirstVisibleChild(total.values) + '_header_0').append(total_title);
             }
         });
-    }
-
-    function renderGridA(element) {
-        var data = dataService.data0;
-        parseHeaders(data.columns);
-        //element.text('parsed data: ' + JSON.stringify(levels));
-        console.log(headers);
-
-        var max_level = levels.reduce(function (a,b) { return a > b ? a : b });
-        console.log(max_level);
-        var columns = levels.length;
-        var rows = [];
-
-        for (var i = 0; i < max_level; i++) {
-            rows.push({elem: $('<div>'), cells: []});
-            rows[i].elem.addClass('grid-row');
-            element.append(rows[i].elem);
-            rows[i].elem.append($('<div>'));
-
-            for (var j = 0; j < headers[i].length; j++) {
-                rows[i].cells.push($('<div>'));
-                rows[i].cells[j].addClass('grid-cell');
-                rows[i].cells[j].text(headers[i][j]);
-                rows[i].elem.append(rows[i].cells[j]);
-            }
-        }
-    }
-
-    function renderGridB (elem) {
-        var data = dataService.data1;
-        var groups = data.filter(function (column) { return column.type == 'group'});
-        var span = groups.length > 1 ? 3 : groups.length == 1 ? 2 : 1;
-        var cols = [];
-        var col_headers = [];
-        var group_headers = [];
-
-        for (var i = 0; i < data.length; i++) {
-            var cells = [];
-
-            if (data[i].type !== 'group' && data[i].type !== 'total') {
-                addBlock(elem, cols, i, 'grid-column');
-                cols[i].attr('id', data[i].id);
-                console.log('Adding column: ' + data[i].name);
-
-                var css_class = data[i].group ? 'grid-column-header grid-vcell' : 'grid-column-header grid-vcell rowspan' + span;
-                if (data[i].group) {
-                    for (var n = 0; n < span - 1; n++) {
-                        console.log('Adding header cell for column: ' + data[i].name);
-                        addBlock(cols[i], cells, n, 'grid-vcell');
-                        cells[n].attr('id', data[i].id + '_header' + n);
-                    }
-                }
-                addBlock(cols[i], col_headers, i, css_class);
-                col_headers[i].text(data[i].name);
-                col_headers[i].attr('id', data[i].id + '_header_text');
-
-                for (var cl = cells.length, j = cl; j < data[i].values.length + cl; j++) {
-                    console.log('Adding cell: ' + data[i].values[j - cl] + ' to column: ' + data[i].name);
-                    addBlock(cols[i], cells, j, 'grid-vcell');
-                    cells[j].attr('id', data[i].id + '_cell' + (j - cl));
-                    cells[j].text(data[i].values[j - cl]);
-                }
-            } else {
-                group_headers.push($('<div>'));
-                var l = group_headers.length - 1;
-                var group_width = 0;
-                var container;
-
-                for (var n = 0; n < data[i].values.length; n++) {
-                    var child_id = data[i].values[n];
-                    var child_column = getElement(child_id);
-                    group_width += child_column[0].offsetWidth;
-                }
-                group_headers[l].addClass('grid-group-header');
-                group_headers[l].css({width: (group_width-7)+'px'});
-                group_headers[l].attr('id', data[i].id);
-                group_headers[l].text(data[i].name);
-
-                if (data[i].type == 'total') {
-                    container = getElement(data[i].values[0] + '_header0');
-                } else {
-                    container = getElement(data[i].values[0] + '_header' + (span-2));
-                }
-
-                container.append(group_headers[l]);
-            }
-        }
     }
 
     function renderGridC (element, data) {
@@ -274,10 +212,44 @@ app.directive('aGrid', function (dataService, $lstore) {
             obj[col.id] = col;
             return obj;
         }, {});
-        var totals = data.filter(function (column) { return column.type == 'total'})
-            .map(function (total) { return total.id });
+        var struct = angular.copy(_data, {});
+        var stored_struct = $lstore.get('struct') || {};
+
+        angular.forEach(struct, function (column, key) {
+            if (column.type != 'group' && column.type != 'total') {
+                delete column.values;
+            }
+            if (!this.hasOwnProperty(key)) {
+                console.log('Adding key for storage: ' + key);
+                struct[key].expanded = 1;
+                this[key] = {};
+                angular.copy(struct[key], this[key]);
+            } else {
+                struct[key].expanded = angular.isDefined(this[key].expanded) ? this[key].expanded : 1;
+            }
+            $lstore.set('struct', this);
+            console.log(this);
+            console.log(struct[key]);
+        }, stored_struct);
+
         var groups = data.filter(function (column) { return column.type == 'group'})
-            .map(function (group) { return group.id });
+            .map(function (group) {
+                _data[group.id].values.unshift(group.id);
+                return group.id;
+            });
+
+        var totals = data.filter(function (column) { return column.type == 'total'})
+            .map(function (total) {
+                total.values.unshift(total.id);
+                total.values = total.values.map(function (val) {
+                    if (_data[val].type == 'group') {
+                        return _data[val].values;
+                    } else {
+                        return [val];
+                    }
+                }).reduce(function (a, b) {return a.concat(b)});
+                return total.id;
+            });
 
         span = totals.length > 0 ? 3 : groups.length > 0 ? 2 : 1;
 
@@ -309,17 +281,7 @@ app.directive('aGrid', function (dataService, $lstore) {
                     expanded = 1;
                     $lstore.set(data[i].id, 1);
                 }
-                data[i].values.unshift(data[i].id);
-                if (data[i].type == 'total') {
-                    data[i].values = data[i].values.map(function (val) {
-                        if (_data[val].type == 'group') {
-                            return _data[val].values;
-                        } else {
-                            return [val];
-                        }
-                    }).reduce(function (a,b) {return a.concat(b)});
 
-                }
                 getElement(data[i].values[1] + '_header').before(addHeaderColumn(data[i].id + '_header', span).addClass('grid-column-hidden'));
                 getElement(data[i].values[1] + '_body').before(addBodyColumn(data[i].id + '_body', getGroupedValues(data[i], data)).addClass('grid-column-hidden'));
 
@@ -327,8 +289,9 @@ app.directive('aGrid', function (dataService, $lstore) {
                 for (var j = 0; j < data[i].values.length; j++) {
                     range.push(data[i].values[j] + '_header_' + row_num);
                 }
+
                 var group_header = addRange(data[i].id + '_title_header', range, 'grid-group-header grid-centered', data[i].name);
-                getElement(data[i].values[expanded] + '_header_' + row_num).append(group_header);
+                getElement(findFirstVisibleChild(data[i].values) + '_header_' + row_num).append(group_header);
 
 
                 group_header.on('dblclick',
@@ -338,18 +301,44 @@ app.directive('aGrid', function (dataService, $lstore) {
                     },
                     function (event) {
                         var elem = $(event.currentTarget);
+                        var struct = $lstore.get('struct');
+                        var childs = struct[event.data.group.id].values.slice(0);
+
                         var expanded = $lstore.get(event.data.group.id);
-                        $lstore.set(event.data.group.id, (expanded == 0 ? 1 : 0));
+                        struct[event.data.group.id].expanded = expanded;
+                        expanded = expanded == 0 ? 1 : 0;
+                        $lstore.set(event.data.group.id, expanded);
+
+                        childs.map(function (v) { struct[v].expanded = expanded; return v; });
+                        $lstore.set('struct', struct);
                         toggleGroup(event.data.group, event.data.total);
                 });
             }
         }
     }
 
+    function renderGridD (element, data) {
+        var _data = data.reduce(function (obj, col) {
+            obj[col.id] = col;
+            return obj;
+        }, {});
+
+        var groups = data.filter(function (column) { return column.type == 'group' });
+        var totals = data.filter(function (column) { return column.group == null });
+
+        var grid_header = addElement('grid-header', 'grid-header');
+        var grid_body = addElement('grid-body', 'grid-body');
+        var grid_footer = addElement('grid-footer', 'grid-footer');
+        element.append(grid_header).append(grid_body).append(grid_footer);
+
+        for (var i = 0; i < totals.length; i++) {
+            addElement(totals.id + '_header', 'grid-vblock')
+        }
+    }
+
     function link (scope, element) {
-        //renderGridA(element);
-        //renderGridB(element);
-        renderGridC(element, dataService.data1);
+
+        renderGridD(element, dataService.data2);
     }
 
     return {

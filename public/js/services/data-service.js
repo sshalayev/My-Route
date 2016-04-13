@@ -47,6 +47,30 @@ app.service('dataService', function () {
         {id: 'group0', name: 'Group 1', type: 'group', group: 'total', values: ['col2', 'col3', 'col4']},
         {id: 'group1', name: 'Group 2', type: 'group', group: 'total', values: ['col5', 'col6', 'col7']},
         {id: 'total', name: 'Total', type: 'total', group: null, values: ['group0', 'group1']}
+    ];
+
+    this.data2 = [
+        {id: 'col0', name: 'Day', type: 'rowheader', group: null, values: ['day 1', 'day 2', 'day 3', 'day4', 'day5', 'day6']},
+        {id: 'col1', name: 'Date', type: 'date', group: null, values: ['02-feb-2016', '14-feb-2016', '03-mar-2016', '10-mar-2016', '28-mar-2016', '03-apr-2016']},
+        {id: 'total0', name: 'Total 1', type: 'total', group: null, values: ['group0', 'group1']},
+        {id: 'group0', name: 'Group 1', type: 'group', group: 'total', values: ['col2', 'col3', 'col4']},
+        {id: 'col2', name: 'par 1', type: 'normal', group: 'group0', values: [10, 12, 15, 18, 14, 15]},
+        {id: 'col3', name: 'par 2', type: 'normal', group: 'group0', values: [56, 64, 58, 60, 66, 58]},
+        {id: 'col4', name: 'par 3', type: 'normal', group: 'group0', values: [45, 47, 32, 36, 34, 40]},
+        {id: 'group1', name: 'Group 2', type: 'group', group: 'total', values: ['col5', 'col6', 'col7']},
+        {id: 'col5', name: 'par 1', type: 'normal', group: 'group1', values: [23, 21, 45, 36, 38, 30]},
+        {id: 'col6', name: 'par 2', type: 'normal', group: 'group1', values: [13, 10, 16, 12, 13, 15]},
+        {id: 'col7', name: 'par 3', type: 'normal', group: 'group1', values: [9, 11, 8, 7, 9, 12]},
+        {id: 'total1', name: 'Total 2', type: 'total', group: null, values: ['group2', 'group3']},
+        {id: 'group2', name: 'Group 3', type: 'group', group: 'total', values: ['col8', 'col8', 'col10']},
+        {id: 'col8', name: 'par 1', type: 'normal', group: 'group1', values: [23, 21, 45, 36, 38, 30]},
+        {id: 'col9', name: 'par 2', type: 'normal', group: 'group1', values: [13, 10, 16, 12, 13, 15]},
+        {id: 'col10', name: 'par 3', type: 'normal', group: 'group1', values: [9, 11, 8, 7, 9, 12]},
+        {id: 'group3', name: 'Group 4', type: 'group', group: 'total', values: ['col11', 'col12', 'col13']},
+        {id: 'col11', name: 'par 1', type: 'normal', group: 'group1', values: [23, 21, 45, 36, 38, 30]},
+        {id: 'col12', name: 'par 2', type: 'normal', group: 'group1', values: [13, 10, 16, 12, 13, 15]},
+        {id: 'col13', name: 'par 3', type: 'normal', group: 'group1', values: [9, 11, 8, 7, 9, 12]},
+        {id: 'col14', name: 'index', type: 'normal', group: null, values: ['abc', 'dev', 'stg', 'prg', 'com', 'pst']}
     ]
 
 });
