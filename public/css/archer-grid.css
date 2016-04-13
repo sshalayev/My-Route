@@ -39,7 +39,6 @@
     padding: 3px;
     background-color: #e0e0e0;
     color: #fff;
-    border-right: 1px solid #ccc;
 }
 .grid-group-header {
     position: absolute;
@@ -50,8 +49,6 @@
     margin-left: -3px;
     background-color: #1f324d;
     color: #fff;
-    border-right: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
     cursor: pointer;
 }
 .grid-column-hidden {

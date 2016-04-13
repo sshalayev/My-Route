@@ -149,34 +149,36 @@ app.directive('aGrid', function (dataService, $lstore) {
         var row_num = title.parent().attr('id').replace(/^.+(\d+)$/i, '$1');
         var parent = getElement(group.values[expanded] + '_header_' + row_num);
 
-        var range = group.values.map(function (v) {return v + '_header_' + row_num});
-        var points = getRangeDimension(range);
-
         var childs = group.values.slice(1);
         var selectors = childs.map(function (v) { return '#' + v + '_header, #' + v + '_body' }).join(', ');
 
         $(document.querySelectorAll(selectors)).toggleClass('grid-column-hidden');
         getElement(group.id + '_header').toggleClass('grid-column-hidden');
         getElement(group.id + '_body').toggleClass('grid-column-hidden');
-
-        title.removeAttr('style');
-        title.css({
-            width: (points.right - points.left - 6) + 'px',
-            height: (points.bottom - points.top - 7) + 'px'
-        });
         title.detach();
         parent.append(title);
 
-        if (total) {
-            var total_title = getElement(total.id);
-            range = total.values.map(function (v) {return v + '_header_0'});
-            points = getRangeDimension(range);
-            total_title.removeAttr('style');
-            total_title.css({
-                width: (points.right - points.left - 6) + 'px',
+        getElement(group.id + '_header').on('transitionend', function (event) {
+            var range = group.values.map(function (v) {return v + '_header_' + row_num});
+            var points = getRangeDimension(range);
+            title.removeAttr('style');
+            title.css({
+                width: (points.right - points.left - 14) + 'px',
                 height: (points.bottom - points.top - 7) + 'px'
             });
-        }
+
+
+            if (total) {
+                var total_title = getElement(total.id);
+                range = total.values.map(function (v) {return v + '_header_0'});
+                points = getRangeDimension(range);
+                total_title.removeAttr('style');
+                total_title.css({
+                    width: (points.right - points.left - 6) + 'px',
+                    height: (points.bottom - points.top - 7) + 'px'
+                });
+            }
+        });
     }
 
     function renderGridA(element) {
@@ -287,7 +289,7 @@ app.directive('aGrid', function (dataService, $lstore) {
         for (var i = 0; i < data.length; i++) {
             var range = [];
             var expanded;
-            var total_full = [];
+
             if (data[i].type !== 'group' && data[i].type !== 'total') {
                 grid_header.append(addHeaderColumn(data[i].id + '_header', span));
                 grid_body.append(addBodyColumn(data[i].id + '_body', data[i].values));
