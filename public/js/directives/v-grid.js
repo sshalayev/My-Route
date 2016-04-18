@@ -33,9 +33,12 @@ app.directive('vGrid', function (dataService, $lstore) {
         group_header.append(group_title).append(group_container);
         parent.append(group_header);
 
-        group_header.on('dblclick', {elem_id: id}, function(event) {
+        group_title.on('dblclick', {elem_id: id}, function(event) {
+            event.stopPropagation();
             var elem = $(event.target);
             var elem_id = event.data.elem_id;
+            console.log('Clicked ' + event.data.elem_id);
+            elem.toggleClass('vgrid-title--collapsed');
             getElement(elem_id + '_container').toggleClass('vgrid-column-hidden');
             getElement(elem_id + '_body_container').toggleClass('vgrid-column-hidden');
             getElement(elem_id + '_total').toggleClass('vgrid-column-hidden');
