@@ -11,6 +11,7 @@ app.directive('vGrid', function (dataService, $lstore) {
     function findItem (id) {
         return data.reduce(function (a, b) {return a.id == id ? a : b});
     }
+
     function addElement (id, css_class, value) {
         var cell = $('<div>');
         cell.addClass(css_class);
@@ -100,6 +101,7 @@ app.directive('vGrid', function (dataService, $lstore) {
                 }
             }
         }
+
         return results.reduce(function (a, b) { return sumArrays(a, b)});
     }
 
@@ -112,6 +114,7 @@ app.directive('vGrid', function (dataService, $lstore) {
             width: (points.right - points.left) + 'px',
             height: (points.bottom - points.top - 1) + 'px'
         });
+
         return range_elem;
     }
 
@@ -153,7 +156,6 @@ app.directive('vGrid', function (dataService, $lstore) {
 
     function buildGrid (id) {
         var item = findItem(id);
-        console.log(item);
 
         if (item.values) {
             console.log('Single: ' + item.id);
@@ -176,9 +178,7 @@ app.directive('vGrid', function (dataService, $lstore) {
             obj[col.id] = col;
             return obj;
         }, {});
-
         var totals = data.filter(function (column) { return !column.parent });
-        console.log(totals);
 
         element.append(grid_header).append(grid_body).append(grid_footer);
         for (var i = 0; i < totals.length; i++) {
@@ -187,7 +187,6 @@ app.directive('vGrid', function (dataService, $lstore) {
     }
 
     function link (scope, element) {
-
         renderGridD(element);
     }
 
