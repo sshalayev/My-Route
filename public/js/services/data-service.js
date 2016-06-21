@@ -81,11 +81,13 @@ app.service('dataService', function () {
             subs: [
                 {
                     state: 'reports.daily',
-                    name: 'Daily reports'
+                    name: 'Daily reports',
+                    template: 'partials/archer-reports-daily.html'
                 },
                 {
                     state: 'reports.status',
-                    name: 'Status report'
+                    name: 'Status report',
+                    template: 'partials/archer-reports-daily.html'
                 }
             ]
         },
@@ -96,15 +98,18 @@ app.service('dataService', function () {
             subs: [
                 {
                     state: 'pm.projects',
-                    name: 'Projects'
+                    name: 'Projects',
+                    template: 'partials/archer-pm-projects.html'
                 },
                 {
                     state: 'pm.control',
-                    name: 'Control'
+                    name: 'Control',
+                    template: 'partials/archer-pm-control.html'
                 },
                 {
                     state: 'pm.csi',
-                    name: 'Client Satisfaction'
+                    name: 'Client Satisfaction',
+                    template: 'partials/archer-pm-csi.html'
                 }
             ]
         },
@@ -115,7 +120,8 @@ app.service('dataService', function () {
             subs: [
                 {
                     state: 'hrm.userProfile',
-                    name: 'Projects'
+                    name: 'Projects',
+                    template: 'partials/archer-hrm-profile.html'
                 }
             ]
         },
@@ -129,8 +135,16 @@ app.service('dataService', function () {
                     name: 'Flows'
                 },
                 {
-                    state: 'finances.wires',
-                    name: 'Wires'
+                    state: 'finances.billing',
+                    name: 'Billing'
+                },
+                {
+                    state: 'finances.expenses',
+                    name: 'Expenses'
+                },
+                {
+                    state: 'finances.banks',
+                    name: 'Banks and Cashiers'
                 }
             ]
         },
@@ -140,20 +154,20 @@ app.service('dataService', function () {
             icon: 'multiline_chart',
             subs: [
                 {
-                    state: 'analytics.E1',
-                    name: 'Utilization Effectiveness'
+                    state: 'analytics.general',
+                    name: 'General'
                 },
                 {
-                    state: 'analytics.E2',
-                    name: 'Cost Effectiveness'
+                    state: 'analytics.effectiveness',
+                    name: 'Effectiveness'
                 },
                 {
-                    state: 'analytics.E3',
-                    name: 'Dev. Effectiveness (CPI)'
+                    state: 'analytics.pexecutive',
+                    name: 'Project Executive'
                 },
                 {
-                    state: 'analytics.E4',
-                    name: 'A/R Effectiveness'
+                    state: 'analytics.employee',
+                    name: 'Employee'
                 }
             ]
         }

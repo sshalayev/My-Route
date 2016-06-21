@@ -17,24 +17,20 @@
                               ng-class="{'md-raised': activeMenuItem == item.state}"
                               ng-click="navigateTo(item.state)">
 
-                    <div layout="row" layout-align="center">
-                        <md-icon>{{item.icon}}</md-icon>
-                        <p>{{ item.name }}</p>
-
-                    </div>
+                    <nav-item nav-icon="item.icon" nav-state="item.state" nav-text="item.name"></nav-item>
                 </md-list-item>
-                <div ng-show="subMenuExpanded[item.state]">
+                <!--<div ng-show="subMenuExpanded[item.state]">
                     <md-list class="sidenav-submenu">
                         <md-list-item ng-click="navigateTo(sub.state)" ng-repeat="sub in item.subs">
-                            <span class="sidenav-submenu--text">{{sub.name}}</span>
+                            <span class="sidenav-submenu&#45;&#45;text">{{sub.name}}</span>
                         </md-list-item>
                     </md-list>
-                </div>
+                </div>-->
             </div>
         </md-list>
     </md-sidenav>
     <div layout="column" flex="auto">
-        <md-toolbar class="md-primary md-whiteframe-4dp">
+        <md-toolbar class="md-primary">
             <div class="md-toolbar-tools">
                 <md-button class="md-icon-button" aria-label="Settings" ng-click="sidenavOpen('archerMainNav')">
                     <md-icon md-svg-icon="/img/icons/menu.svg"></md-icon>
@@ -48,7 +44,13 @@
                 </md-button>
             </div>
         </md-toolbar>
-        <div class="archer-container" ui-view></div>
+        <md-tabs class="md-primary md-whiteframe-4dp" md-selected="0" md-align-tabs="top">
+            <md-tab ng-repeat="tab in tabSet" md-on-select="switchTab(tab.state)">
+                <md-tab-label>{{tab.name}}</md-tab-label>
+            </md-tab>
+        </md-tabs>
+        <md-content flex="auto" ui-view></md-content>
+
     </div>
 
 

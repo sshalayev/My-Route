@@ -80,17 +80,38 @@ app.config(['ngDialogProvider', '$stateProvider', '$urlRouterProvider', '$locati
             }
         })
         .state("main.archer.reports", {
-            templateUrl: '/partials/archer-reports.html',
+            //templateUrl: '/partials/archer-reports.html',
             url: "reports/",
             onEnter: function ($rootScope) {
-                $rootScope.pageTitle = 'Archer Producer Reports';
+                $rootScope.pageTitle = 'Reports';
             }
         })
         .state("main.archer.pm", {
-            templateUrl: '/partials/archer-pm.html',
+            //templateUrl: '/partials/archer-pm.html',
             url: "pm/",
             onEnter: function ($rootScope) {
-                $rootScope.pageTitle = 'Archer Producer Project Management';
+                $rootScope.pageTitle = 'Project Management';
+            }
+        })
+        .state("main.archer.hrm", {
+            //templateUrl: '/partials/archer-hrm.html',
+            url: "hrm/",
+            onEnter: function ($rootScope) {
+                $rootScope.pageTitle = 'HR Management';
+            }
+        })
+        .state("main.archer.finances", {
+            //templateUrl: '/partials/archer-finances.html',
+            url: "pm/",
+            onEnter: function ($rootScope) {
+                $rootScope.pageTitle = 'Finances';
+            }
+        })
+        .state("main.archer.analytics", {
+            //templateUrl: '/partials/archer-analytics.html',
+            url: "pm/",
+            onEnter: function ($rootScope) {
+                $rootScope.pageTitle = 'Analytics';
             }
         })
 

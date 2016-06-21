@@ -48,7 +48,7 @@ router.get('/', routes.index);
 router.get('/map', routes.index);
 router.get('/test', routes.index);
 router.get('/archer/reports', routes.index);
-router.get('/archer/projects', routes.index);
+router.get('/archer/*', routes.index);
 router.get('/partials/:name', routes.partials);
 /**/
 //router.get('*', routes.index);
