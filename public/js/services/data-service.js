@@ -71,6 +71,92 @@ app.service('dataService', function () {
         {id: 'col12', name: 'par 2', type: 'normal', parent: 'group3', values: [13, 10, 16, 12, 13, 15]},
         {id: 'col13', name: 'par 3', type: 'normal', parent: 'group3', values: [9, 11, 8, 7, 9, 12]},
         {id: 'col14', name: 'index', type: 'normal', parent: null, values: ['abc', 'dev', 'stg', 'prg', 'com', 'pst']}
-    ]
+    ];
+
+    this.archerNav = [
+        {
+            state: 'reports',
+            name: 'Reports',
+            icon: 'description',
+            subs: [
+                {
+                    state: 'reports.daily',
+                    name: 'Daily reports'
+                },
+                {
+                    state: 'reports.status',
+                    name: 'Status report'
+                }
+            ]
+        },
+        {
+            state: 'pm',
+            name: 'Project Management',
+            icon: 'assessment',
+            subs: [
+                {
+                    state: 'pm.projects',
+                    name: 'Projects'
+                },
+                {
+                    state: 'pm.control',
+                    name: 'Control'
+                },
+                {
+                    state: 'pm.csi',
+                    name: 'Client Satisfaction'
+                }
+            ]
+        },
+        {
+            state: 'hrm',
+            name: 'HR Management',
+            icon: 'supervisor_account',
+            subs: [
+                {
+                    state: 'hrm.userProfile',
+                    name: 'Projects'
+                }
+            ]
+        },
+        {
+            state: 'finances',
+            name: 'Finances',
+            icon: 'attach_money',
+            subs: [
+                {
+                    state: 'finances.flows',
+                    name: 'Flows'
+                },
+                {
+                    state: 'finances.wires',
+                    name: 'Wires'
+                }
+            ]
+        },
+        {
+            state: 'analytics',
+            name: 'Analytics',
+            icon: 'multiline_chart',
+            subs: [
+                {
+                    state: 'analytics.E1',
+                    name: 'Utilization Effectiveness'
+                },
+                {
+                    state: 'analytics.E2',
+                    name: 'Cost Effectiveness'
+                },
+                {
+                    state: 'analytics.E3',
+                    name: 'Dev. Effectiveness (CPI)'
+                },
+                {
+                    state: 'analytics.E4',
+                    name: 'A/R Effectiveness'
+                }
+            ]
+        }
+    ];
 
 });

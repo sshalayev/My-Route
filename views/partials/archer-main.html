@@ -1,0 +1,54 @@
+<section layout="row" flex>
+    <md-sidenav
+            class="md-sidenav-left md-primary"
+            md-component-id="archerMainNav"
+            md-disable-backdrop
+            md-whiteframe="4">
+        <div layout="row">
+            <span flex></span>
+            <md-button ng-click="sidenavClose('archerMainNav')" class="md-icon-button launch">
+                <md-icon>exit_to_app</md-icon>
+            </md-button>
+        </div>
+        <md-divider></md-divider>
+        <md-list>
+            <div ng-repeat="item in navigation">
+                <md-list-item class="md-primary"
+                              ng-class="{'md-raised': activeMenuItem == item.state}"
+                              ng-click="navigateTo(item.state)">
+
+                    <div layout="row" layout-align="center">
+                        <md-icon>{{item.icon}}</md-icon>
+                        <p>{{ item.name }}</p>
+
+                    </div>
+                </md-list-item>
+                <div ng-show="subMenuExpanded[item.state]">
+                    <md-list class="sidenav-submenu">
+                        <md-list-item ng-click="navigateTo(sub.state)" ng-repeat="sub in item.subs">
+                            <span class="sidenav-submenu--text">{{sub.name}}</span>
+                        </md-list-item>
+                    </md-list>
+                </div>
+            </div>
+        </md-list>
+    </md-sidenav>
+    <div layout="column" flex="auto">
+        <md-toolbar class="md-primary md-whiteframe-4dp">
+            <div class="md-toolbar-tools">
+                <md-button class="md-icon-button" aria-label="Settings" ng-click="sidenavOpen('archerMainNav')">
+                    <md-icon md-svg-icon="/img/icons/menu.svg"></md-icon>
+                </md-button>
+                <h2>
+                    <span>Archer producer</span>
+                </h2>
+                <span flex></span>
+                <md-button class="md-icon-button" aria-label="More">
+                    <md-icon md-svg-icon="/img/icons/more_vert.svg"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <div class="archer-container" ui-view></div>
+    </div>
+
+

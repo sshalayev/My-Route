@@ -11,10 +11,12 @@ var app = angular.module('awmApp', [
     'angular-storage',
     'nemLogging',
     'ui-leaflet',
-    'ui.grid'
+    'ui.grid',
+    'ngMaterial'
 ]);
 
-app.config(['ngDialogProvider', '$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider', function (ngDialogProvider, $stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
+app.config(['ngDialogProvider', '$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider', '$mdThemingProvider',
+    function (ngDialogProvider, $stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $mdThemingProvider) {
     $locationProvider.html5Mode({
         enabled: true,
         requireBase: false
@@ -33,6 +35,15 @@ app.config(['ngDialogProvider', '$stateProvider', '$urlRouterProvider', '$locati
     $httpProvider.defaults.headers.post = {'Content-Type': 'application/x-www-form-urlencoded'};
     $httpProvider.defaults.headers.put = {'Content-Type': 'application/x-www-form-urlencoded'};
     $httpProvider.defaults.headers.delete = {'Content-Type': 'application/x-www-form-urlencoded'};
+
+    $mdThemingProvider.theme('default')
+        .primaryPalette('red')
+        .accentPalette('orange');
+
+    $mdThemingProvider.theme('archerInverted')
+        .primaryPalette('red')
+        .accentPalette('grey')
+        .warnPalette('orange');
 
     $urlRouterProvider.otherwise('/map/');
 
@@ -59,6 +70,30 @@ app.config(['ngDialogProvider', '$stateProvider', '$urlRouterProvider', '$locati
                 $rootScope.pageTitle = 'My Test';
             }
         })
+        .state("main.archer", {
+            controller: 'ArcherController',
+            templateUrl: '/partials/archer-main.html',
+            abstract: true,
+            url: "archer/",
+            onEnter: function ($rootScope) {
+                $rootScope.pageTitle = 'Archer Producer';
+            }
+        })
+        .state("main.archer.reports", {
+            templateUrl: '/partials/archer-reports.html',
+            url: "reports/",
+            onEnter: function ($rootScope) {
+                $rootScope.pageTitle = 'Archer Producer Reports';
+            }
+        })
+        .state("main.archer.pm", {
+            templateUrl: '/partials/archer-pm.html',
+            url: "pm/",
+            onEnter: function ($rootScope) {
+                $rootScope.pageTitle = 'Archer Producer Project Management';
+            }
+        })
+
 }]);
 
 app.run(
