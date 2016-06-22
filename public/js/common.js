@@ -54,66 +54,103 @@ app.config(['ngDialogProvider', '$stateProvider', '$urlRouterProvider', '$locati
             controller: 'MainController',
             template: '<div ui-view id="level2-view"></div>'
         })
-        .state("main.map", {
-            controller: 'MapController',
-            templateUrl: '/partials/map.html',
-            url: "map/",
-            onEnter: function ($rootScope) {
-                $rootScope.pageTitle = 'My Route';
-            }
-        })
-        .state("main.test", {
-            controller: 'TestController',
-            templateUrl: '/partials/test.html',
-            url: "test/",
-            onEnter: function ($rootScope) {
-                $rootScope.pageTitle = 'My Test';
-            }
-        })
-        .state("main.archer", {
-            controller: 'ArcherController',
-            templateUrl: '/partials/archer-main.html',
-            abstract: true,
-            url: "archer/",
-            onEnter: function ($rootScope) {
-                $rootScope.pageTitle = 'Archer Producer';
-            }
-        })
-        .state("main.archer.reports", {
-            //templateUrl: '/partials/archer-reports.html',
-            url: "reports/",
-            onEnter: function ($rootScope) {
-                $rootScope.pageTitle = 'Reports';
-            }
-        })
-        .state("main.archer.pm", {
-            //templateUrl: '/partials/archer-pm.html',
-            url: "pm/",
-            onEnter: function ($rootScope) {
-                $rootScope.pageTitle = 'Project Management';
-            }
-        })
-        .state("main.archer.hrm", {
-            //templateUrl: '/partials/archer-hrm.html',
-            url: "hrm/",
-            onEnter: function ($rootScope) {
-                $rootScope.pageTitle = 'HR Management';
-            }
-        })
-        .state("main.archer.finances", {
-            //templateUrl: '/partials/archer-finances.html',
-            url: "pm/",
-            onEnter: function ($rootScope) {
-                $rootScope.pageTitle = 'Finances';
-            }
-        })
-        .state("main.archer.analytics", {
-            //templateUrl: '/partials/archer-analytics.html',
-            url: "pm/",
-            onEnter: function ($rootScope) {
-                $rootScope.pageTitle = 'Analytics';
-            }
-        })
+            .state("main.map", {
+                controller: 'MapController',
+                templateUrl: '/partials/map.html',
+                url: "map/",
+                onEnter: function ($rootScope) {
+                    $rootScope.pageTitle = 'My Route';
+                }
+            })
+            .state("main.test", {
+                controller: 'TestController',
+                templateUrl: '/partials/test.html',
+                url: "test/",
+                onEnter: function ($rootScope) {
+                    $rootScope.pageTitle = 'My Test';
+                }
+            })
+            .state("main.archer", {
+                controller: 'ArcherController',
+                templateUrl: '/partials/archer-main.html',
+                abstract: true,
+                url: "archer/",
+                onEnter: function ($rootScope) {
+                    $rootScope.pageTitle = 'Archer Producer';
+                }
+            })
+                .state("main.archer.reports", {
+                    //templateUrl: '/partials/archer-reports.html',
+                    url: "reports/",
+                    abstract: true,
+                    onEnter: function ($rootScope) {
+                        $rootScope.pageTitle = 'Reports';
+                    }
+                })
+                    .state("main.archer.reports.daily", {
+                        templateUrl: '/partials/archer-reports-daily.html',
+                        url: "daily/",
+                        onEnter: function ($rootScope) {
+                            $rootScope.pageTitle = 'Daily Reports';
+                        }
+                    })
+                    .state("main.archer.reports.status", {
+                        templateUrl: '/partials/archer-reports-status.html',
+                        url: "status/",
+                        onEnter: function ($rootScope) {
+                            $rootScope.pageTitle = 'Status Reports';
+                        }
+                    })
+                .state("main.archer.pm", {
+                    //templateUrl: '/partials/archer-pm.html',
+                    url: "pm/",
+                    abstract: true,
+                    onEnter: function ($rootScope) {
+                        $rootScope.pageTitle = 'Project Management';
+                    }
+                })
+                    .state("main.archer.pm.projects", {
+                        templateUrl: '/partials/archer-pm-projects.html',
+                        url: "projects/",
+                        onEnter: function ($rootScope) {
+                            $rootScope.pageTitle = 'PM: Projects';
+                        }
+                    })
+                    .state("main.archer.pm.control", {
+                        templateUrl: '/partials/archer-pm-control.html',
+                        url: "control/",
+                        onEnter: function ($rootScope) {
+                            $rootScope.pageTitle = 'PM: Control';
+                        }
+                    })
+                    .state("main.archer.pm.csi", {
+                        templateUrl: '/partials/archer-pm-csi.html',
+                        url: "csi/",
+                        onEnter: function ($rootScope) {
+                            $rootScope.pageTitle = 'PM: Cusomer Satisfaction';
+                        }
+                    })
+                .state("main.archer.hrm", {
+                    //templateUrl: '/partials/archer-hrm.html',
+                    url: "hrm/",
+                    onEnter: function ($rootScope) {
+                        $rootScope.pageTitle = 'HR Management';
+                    }
+                })
+                .state("main.archer.finances", {
+                    //templateUrl: '/partials/archer-finances.html',
+                    url: "pm/",
+                    onEnter: function ($rootScope) {
+                        $rootScope.pageTitle = 'Finances';
+                    }
+                })
+                .state("main.archer.analytics", {
+                    //templateUrl: '/partials/archer-analytics.html',
+                    url: "pm/",
+                    onEnter: function ($rootScope) {
+                        $rootScope.pageTitle = 'Analytics';
+                    }
+                })
 
 }]);
 

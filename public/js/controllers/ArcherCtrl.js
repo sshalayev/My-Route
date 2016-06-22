@@ -2,38 +2,49 @@
  * Created by pastor on 6/18/2016.
  */
 app.controller('ArcherController', ['$scope', '$rootScope', '$state', '$mdSidenav', 'dataService', function ($scope, $rootScope, $state, $mdSidenav, dataService) {
+    console.log('Main Archer controller init');
     $scope.navigation = dataService.archerNav;
-    $scope.subMenuExpanded = {};
-    $scope.tabSet = getTabSet();
+    $scope.tabSet = getTabSet($state.current.name);
+    $scope.activeTabIndex = getTabIndex($state.current.name);
+    $scope.sidenavId = 'archerMainNav';
 
-    for (var i = 0; i < $scope.navigation.length; i++) {
-        var item = $scope.navigation[i];
-        $scope.subMenuExpanded[item.state] = false;
-    }
 
-    $scope.sidenavOpen = function(id) {
-        return $mdSidenav(id).open();
+    $scope.sidenavOpen = function() {
+        return $mdSidenav($scope.sidenavId).open();
     };
 
-    $scope.sidenavClose = function(id) {
-        return $mdSidenav(id).close();
+    $scope.sidenavClose = function() {
+        return $mdSidenav($scope.sidenavId).close();
     };
 
-    $scope.navigateTo = function (id) {
-        $scope.subMenuExpanded[id] = !$scope.subMenuExpanded[id];
-        $scope.activeMenuItem = id;
+    $scope.navigateTo = function (parentState) {
+        var navItem = getNavItem(parentState);
+        var target = 'main.archer.';
 
-        console.log('Navigating to ' + id);
-        $state.go('main.archer.' + id);
-        //$mdSidenav('archerMainNav').close();
+        if (navItem.subs) {
+            target += navItem.subs[0].state;
+        } else {
+            target += parentState;
+        }
+        //console.log('Navigating to ' + target);
+        $state.go(target);
+        $mdSidenav($scope.sidenavId).close();
     };
 
-    $scope.toggleSubmenu = function (parent) {
-        $scope.subMenuExpanded[parent] = !$scope.subMenuExpanded[parent];
+    $scope.switchTab = function (childState) {
+        var target = 'main.archer.' + childState;
+        $state.go(target);
     };
 
     $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
-        $scope.tabSet = getTabSet();
+        var fromParent = from.name.split('.')[2];
+        var toParent = to.name.split('.')[2];
+        //console.log('Transition from <' + fromParent + '> to <' + toParent + '>');
+
+        if (fromParent !== toParent) {
+            $scope.tabSet = getTabSet(to.name);
+        }
+        $scope.activeTabIndex = getTabIndex(to.name);
     });
 
     function getNavItem (state) {
@@ -48,8 +59,21 @@ app.controller('ArcherController', ['$scope', '$rootScope', '$state', '$mdSidena
         return result;
     }
 
-    function getTabSet () {
-        var navItem = getNavItem($state.current.name.split('.')[2]);
+    function getTabSet (fullState) {
+        var navItem = getNavItem(fullState.split('.')[2]);
         return navItem.subs || [];
+    }
+
+    function getTabIndex (fullState) {
+        var arrayState = fullState.split('.');
+        var navItem = getNavItem(arrayState[2]);
+        var childState = arrayState.slice(2).join('.');
+
+        for (var i = 0; i < navItem.subs.length; i++) {
+            if (navItem.subs[i].state == childState) {
+                return i;
+            }
+        }
+        return 0;
     }
 }]);
