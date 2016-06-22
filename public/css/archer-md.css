@@ -31,6 +31,14 @@
     overflow-x: hidden;
 }
 
+.horizontal-spacing {
+    margin: 0 8px;
+}
+
+.vertical-spacing {
+    margin: 8px 0;
+}
+
 .fab-add-report {
     position: absolute;
     bottom: 36px;
