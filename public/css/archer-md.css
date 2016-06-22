@@ -1,3 +1,12 @@
+.main-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: row;
+}
 .sidenav-submenu {
     background-color: #f9f9f9;
 
@@ -5,6 +14,28 @@
 .sidenav-submenu--text {
     font-size: 10pt;
     margin-left: 60px;
+}
+.section-container {
+    display: flex;
+    flex-direction: column;
+    overflow-y: hidden;
+    flex: auto;
+}
+
+.section-block {
+    margin: 16px;
+}
+
+.screen-grid {
+    position: relative;
+    overflow-x: hidden;
+}
+
+.fab-add-report {
+    position: absolute;
+    bottom: 36px;
+    right: 36px;
+    z-index: 900;
 }
 .md-whiteframe-2dp {
     box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12); }

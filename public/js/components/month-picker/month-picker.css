@@ -1,0 +1,8 @@
+.month-picker-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.month-picker-text {
+    width: 64px;
+}

@@ -1,4 +1,4 @@
-<section layout="row" flex>
+<div layout="row" class="main-container">
     <md-sidenav
             class="md-sidenav-left md-primary"
             md-component-id="archerMainNav"
@@ -6,8 +6,8 @@
             md-whiteframe="4">
         <div layout="row">
             <span flex></span>
-            <md-button ng-click="sidenavClose()" class="md-icon-button launch">
-                <md-icon>exit_to_app</md-icon>
+            <md-button ng-click="sidenavClose()" class="md-icon-button launch" aria-label="Close navigation drawer">
+                <md-icon>arrow_back</md-icon>
             </md-button>
         </div>
         <md-divider></md-divider>
@@ -16,15 +16,15 @@
                 <md-list-item class="md-primary"
                               ng-click="navigateTo(item.state)">
 
-                    <nav-item nav-icon="item.icon" nav-state="item.state" nav-text="item.name"></nav-item>
+                    <nav-item nav-icon="item.icon" nav-state="item.state" nav-text="item.name" aria-label="Navigate to {{item.name}}"></nav-item>
                 </md-list-item>
             </div>
         </md-list>
     </md-sidenav>
-    <div layout="column" flex="auto">
+    <div layout="column" flex>
         <md-toolbar class="md-primary">
             <div class="md-toolbar-tools">
-                <md-button class="md-icon-button" aria-label="Settings" ng-click="sidenavOpen()">
+                <md-button class="md-icon-button" aria-label="Navigation" ng-click="sidenavOpen()">
                     <md-icon md-svg-icon="/img/icons/menu.svg"></md-icon>
                 </md-button>
                 <h2>
@@ -37,12 +37,12 @@
             </div>
         </md-toolbar>
         <md-tabs class="md-primary md-whiteframe-4dp" md-selected="activeTabIndex" md-align-tabs="top">
-            <md-tab ng-repeat="tab in tabSet" ng-click="switchTab(tab.state)">
+            <md-tab ng-repeat="tab in tabSet" ng-click="switchTab(tab.state)" aria-label="{{tab.name}}">
                 <md-tab-label>{{tab.name}}</md-tab-label>
             </md-tab>
         </md-tabs>
-        <div flex="auto" ui-view></div>
+        <div flex="auto" ui-view layout="column"></div>
 
     </div>
-
+</div>
 

@@ -41,9 +41,10 @@ app.config(['ngDialogProvider', '$stateProvider', '$urlRouterProvider', '$locati
         .accentPalette('orange');
 
     $mdThemingProvider.theme('archerInverted')
-        .primaryPalette('red')
-        .accentPalette('grey')
-        .warnPalette('orange');
+        .primaryPalette('grey')
+        .accentPalette('red')
+        .warnPalette('orange')
+        .dark();
 
     $urlRouterProvider.otherwise('/map/');
 
@@ -80,9 +81,10 @@ app.config(['ngDialogProvider', '$stateProvider', '$urlRouterProvider', '$locati
                 }
             })
                 .state("main.archer.reports", {
-                    //templateUrl: '/partials/archer-reports.html',
+                    template: '<div ui-view class="section-container"></div>',
                     url: "reports/",
                     abstract: true,
+                    controller: "ArcherReportsController",
                     onEnter: function ($rootScope) {
                         $rootScope.pageTitle = 'Reports';
                     }
@@ -102,7 +104,7 @@ app.config(['ngDialogProvider', '$stateProvider', '$urlRouterProvider', '$locati
                         }
                     })
                 .state("main.archer.pm", {
-                    //templateUrl: '/partials/archer-pm.html',
+                    template: '<div ui-view class="section-container"></div>',
                     url: "pm/",
                     abstract: true,
                     onEnter: function ($rootScope) {

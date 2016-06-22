@@ -6,6 +6,8 @@ app.directive('navItem', ['$rootScope', '$mdTheming', '$mdColorPalette', functio
         var reg = new RegExp(scope.navState);
         var defaultColors = $mdTheming.THEMES.default.colors;
         var color = getColor(defaultColors.primary.name, defaultColors.primary.hues.default, 1);
+        //console.log($mdColorPalette.grey);
+        //console.log($mdTheming.THEMES['archerInverted']);
 
         if (reg.test($rootScope.$state.current.name)) {
             console.log('initial coloring');
