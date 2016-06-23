@@ -40,13 +40,17 @@ app.config(['ngDialogProvider', '$stateProvider', '$urlRouterProvider', '$locati
         .primaryPalette('red')
         .accentPalette('orange');
 
+    $mdThemingProvider.theme('redInv')
+        .primaryPalette('grey')
+        .accentPalette('orange')
+        .backgroundPalette('red');
+
     $mdThemingProvider.theme('archerInverted')
         .primaryPalette('grey')
         .accentPalette('red')
-        .warnPalette('orange')
-        .dark();
+        .warnPalette('orange');
 
-    $urlRouterProvider.otherwise('/map/');
+    $urlRouterProvider.otherwise('/archer-login/');
 
     $stateProvider
         .state("main", {
@@ -69,6 +73,14 @@ app.config(['ngDialogProvider', '$stateProvider', '$urlRouterProvider', '$locati
                 url: "test/",
                 onEnter: function ($rootScope) {
                     $rootScope.pageTitle = 'My Test';
+                }
+            })
+            .state("main.archerLogin", {
+                controller: 'ArcherLoginController',
+                templateUrl: '/partials/archer-login.html',
+                url: "archer-login/",
+                onEnter: function ($rootScope) {
+                    $rootScope.pageTitle = 'Archer Producer';
                 }
             })
             .state("main.archer", {

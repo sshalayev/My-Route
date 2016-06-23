@@ -1,0 +1,32 @@
+<md-content layout="row" layout-align="center start" md-theme="redInv" class="md-hue-3 login-back">
+    <md-content class="login-container md-whiteframe-4dp md-primary" md-theme="default">
+        <div class="login-spinner" ng-show="spinner">
+            <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+        </div>
+        <div class="login-logo">
+            <img src="/img/archer-logo.png" alt="Archer Logo">
+        </div>
+        <form name="loginForm">
+            <md-input-container class="md-block">
+                <label>Username</label>
+                <input required md-no-asterisk name="username" ng-model="loginFormData.username">
+                <div ng-messages="loginForm.username.$error">
+                    <div ng-message="required">This is required.</div>
+                </div>
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label>Password</label>
+                <input type="password" required name="password" ng-model="loginFormData.password">
+                <div ng-messages="loginForm.password.$error">
+                    <div ng-message="required">This is required.</div>
+                </div>
+            </md-input-container>
+        </form>
+        <div layout="row" layout-align="center">
+            <md-button class="md-primary md-raised" ng-click="doLogin()">
+                Login
+            </md-button>
+        </div>
+
+    </md-content>
+</md-content>

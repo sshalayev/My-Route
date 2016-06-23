@@ -51,5 +51,40 @@ md-fab-toolbar ._md-fab-toolbar-wrapper {
     height: 48px;
     margin-right: -36px;
 }
+.login-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+.login-container {
+    width: 360px;
+    margin-top: 24px;
+    position: relative;
+    padding: 16px;
+}
+
+.login-logo {
+    width: 320px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.login-spinner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(255,255,255,0.7);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .md-whiteframe-2dp {
     box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12); }
