@@ -1,12 +1,17 @@
 <div class="md-whiteframe-2dp section-block" flex layout="column">
-    <md-toolbar md-theme="archerInverted" class="md-primary md-hue-3">
-        <div class="md-toolbar-tools">
+    <md-toolbar md-theme="archerInverted"
+                class="md-primary md-hue-3"
+                ng-class="{'md-tall': gridWidth < 530}"
+                layout="row"
+                layout-wrap>
+
             <md-button class="md-accent md-hue-2 md-icon-button">
                 <md-icon class="material-icons">settings</md-icon>
             </md-button>
 
             <month-picker></month-picker>
             <md-autocomplete
+                    md-input-name="project"
                     md-selected-item="selectedItem"
                     md-search-text="searchText"
                     md-items="item in querySearch(searchText)"
@@ -29,7 +34,7 @@
             <md-button class="md-icon-button" aria-label="More">
                 <md-icon class="material-icons">expand_less</md-icon>
             </md-button>
-        </div>
+
     </md-toolbar>
     <div ui-grid="dailyReports" class="screen-grid" flex="auto"></div>
     <md-fab-toolbar md-open="false" count="0"
@@ -41,15 +46,6 @@
         </md-fab-trigger>
         <md-toolbar>
             <md-fab-actions class="md-toolbar-tools">
-                <md-button aria-label="comment" class="md-icon-button">
-                    <md-icon md-svg-src="img/icons/ic_comment_24px.svg"></md-icon>
-                </md-button>
-                <md-button aria-label="label" class="md-icon-button">
-                    <md-icon md-svg-src="img/icons/ic_label_24px.svg"></md-icon>
-                </md-button>
-                <md-button aria-label="photo" class="md-icon-button">
-                    <md-icon md-svg-src="img/icons/ic_photo_24px.svg"></md-icon>
-                </md-button>
             </md-fab-actions>
         </md-toolbar>
     </md-fab-toolbar>

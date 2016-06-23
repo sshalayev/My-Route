@@ -5,5 +5,7 @@
     margin: 0 8px;
 }
 .month-picker-text {
-    width: 64px;
+    width: 48px;
+    font-size: 13px;
+    text-align: center;
 }
