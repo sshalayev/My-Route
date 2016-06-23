@@ -32,7 +32,28 @@
         </div>
     </md-toolbar>
     <div ui-grid="dailyReports" class="screen-grid" flex="auto"></div>
-    <md-button class="md-fab md-primary md-hue-2 fab-add-report" aria-label="New report">
+    <md-fab-toolbar md-open="false" count="0"
+                    md-direction="left" class="fab-add-report">
+        <md-fab-trigger class="align-with-text">
+            <md-button aria-label="menu" class="md-fab md-mini md-primary md-hue-2">
+                <md-icon class="material-icons">create</md-icon>
+            </md-button>
+        </md-fab-trigger>
+        <md-toolbar>
+            <md-fab-actions class="md-toolbar-tools">
+                <md-button aria-label="comment" class="md-icon-button">
+                    <md-icon md-svg-src="img/icons/ic_comment_24px.svg"></md-icon>
+                </md-button>
+                <md-button aria-label="label" class="md-icon-button">
+                    <md-icon md-svg-src="img/icons/ic_label_24px.svg"></md-icon>
+                </md-button>
+                <md-button aria-label="photo" class="md-icon-button">
+                    <md-icon md-svg-src="img/icons/ic_photo_24px.svg"></md-icon>
+                </md-button>
+            </md-fab-actions>
+        </md-toolbar>
+    </md-fab-toolbar>
+    <!--<md-button class="md-fab md-primary md-hue-2 fab-add-report" aria-label="New report">
         <md-icon class="material-icons">add</md-icon>
-    </md-button>
+    </md-button>-->
 </div>
