@@ -32,57 +32,60 @@
 <md-button class="md-fab md-primary md-hue-2 fab-add-report" aria-label="New report">
     <md-icon class="material-icons">create</md-icon>
 </md-button>
-<div class="bottom-panel md-whiteframe-8dp" layout="row">
-    <form name="newReportForm" flex>
-        <div class="bottom-panel-controls" layout="row" ng-init="getForm(newReportForm)">
-            <div flex="50%" layout="column" class="form-block">
-                <md-datepicker name="dateString" ng-model="newReport.dateString" md-placeholder="Enter date" class="vertical-spacing" required></md-datepicker>
-                <div class="errors" ng-messages="newReportForm.dateString.$error" ng-if="newReportForm.dateString.$dirty && newReportForm.dateString.$invalid">
-                    <div ng-message="valid">Invalid date!</div>
-                    <div ng-message="required">This date is required!</div>
-                </div>
-                <md-checkbox ng-model="hideInactiveProjects" aria-label="Hide inactive projects" class="form-checkbox md-primary" style="margin: 12px 16px;">
-                    Hide inactive projects from list
-                </md-checkbox>
-                <md-input-container class="md-block horizontal-spacing">
-                    <md-select name="project" ng-model="newReport.project" placeholder="Select Project" class="md-primary form-element-font" required>
-                        <md-option ng-repeat="project in projects" value="{{project}}">
-                            {{project}}
-                        </md-option>
-                    </md-select>
-                    <div class="errors" ng-messages="newReportForm.project.$error" ng-if="newReportForm.project.$dirty && newReportForm.project.$invalid">
-                        <div ng-message="required">Required</div>
+<div class="bottom-panel md-whiteframe-8dp" layout="column" layout-gt-sm="row">
+    <div flex class="form-block">
+        <form name="newReportForm">
+            <div class="bottom-panel-controls" layout="row" layout-xs="column" ng-init="getForm(newReportForm)">
+                <div flex="50%" layout="column" class="form-block">
+                    <md-datepicker name="dateString" ng-model="newReport.dateString" md-placeholder="Enter date" class="vertical-spacing" required></md-datepicker>
+                    <div class="errors" ng-messages="newReportForm.dateString.$error" ng-if="newReportForm.dateString.$dirty && newReportForm.dateString.$invalid">
+                        <div ng-message="valid">Invalid date!</div>
+                        <div ng-message="required">This date is required!</div>
                     </div>
-                </md-input-container>
+                    <md-checkbox ng-model="hideInactiveProjects" aria-label="Hide inactive projects" class="form-checkbox md-primary" style="margin: 12px 16px;">
+                        Hide inactive projects from list
+                    </md-checkbox>
+                    <md-input-container class="md-block horizontal-spacing">
+                        <md-select name="project" ng-model="newReport.project" placeholder="Select Project" class="md-primary form-element-font" required>
+                            <md-option ng-repeat="project in projects" value="{{project}}">
+                                {{project}}
+                            </md-option>
+                        </md-select>
+                        <div class="errors" ng-messages="newReportForm.project.$error" ng-if="newReportForm.project.$dirty && newReportForm.project.$invalid">
+                            <div ng-message="required">Required</div>
+                        </div>
+                    </md-input-container>
 
-                <md-input-container class="md-block form-element-margin">
-                    <md-select name="task" ng-model="newReport.task" placeholder="Select Task" class="md-primary form-element-font" required>
-                        <md-option ng-repeat="task in tasks" value="{{task}}">
-                            {{task}}
-                        </md-option>
-                    </md-select>
-                    <div class="errors" ng-messages="newReportForm.task.$error" ng-if="newReportForm.task.$dirty && newReportForm.task.$invalid">
-                        <div ng-message="required">Required</div>
+                    <md-input-container class="md-block form-element-margin">
+                        <md-select name="task" ng-model="newReport.task" placeholder="Select Task" class="md-primary form-element-font" required>
+                            <md-option ng-repeat="task in tasks" value="{{task}}">
+                                {{task}}
+                            </md-option>
+                        </md-select>
+                        <div class="errors" ng-messages="newReportForm.task.$error" ng-if="newReportForm.task.$dirty && newReportForm.task.$invalid">
+                            <div ng-message="required">Required</div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div flex="50%" layout="column"  class="form-block">
+                    <md-slider flex md-discrete ng-model="newReport.hours" step="1" min="1" max="8" aria-label="Hours" class="md-primary form-element-margin form-element-font">
+                    </md-slider>
+                    <md-input-container class="md-block form-element-margin form-element-font">
+                        <textarea name="body" ng-model="newReport.body" placeholder="Report" md-maxlength="500" rows="6" md-select-on-focus required></textarea>
+                        <div class="errors" ng-messages="newReportForm.body.$error"  ng-if="newReportForm.body.$dirty && newReportForm.body.$invalid">
+                            <div ng-message="required">Report can't be empty</div>
+                        </div>
+                    </md-input-container>
+                    <div layout="row" class="form-button-set">
+                        <span flex></span>
+                        <md-button md-theme="archerInverted" class="md-primary form-button" ng-click="clearNewReport()">Cancel</md-button>
+                        <md-button class="md-primary form-button" ng-click="saveNewReport()" ng-disabled="newReportForm.$invalid || newReportForm.$pristine">Save</md-button>
                     </div>
-                </md-input-container>
-            </div>
-            <div flex="50%" layout="column"  class="form-block">
-                <md-slider flex md-discrete ng-model="newReport.hours" step="1" min="1" max="8" aria-label="Hours" class="md-primary form-element-margin form-element-font">
-                </md-slider>
-                <md-input-container class="md-block form-element-margin form-element-font">
-                    <textarea name="body" ng-model="newReport.body" placeholder="Report" md-maxlength="500" rows="6" md-select-on-focus required></textarea>
-                    <div class="errors" ng-messages="newReportForm.body.$error"  ng-if="newReportForm.body.$dirty && newReportForm.body.$invalid">
-                        <div ng-message="required">Report can't be empty</div>
-                    </div>
-                </md-input-container>
-                <div layout="row" class="form-button-set">
-                    <span flex></span>
-                    <md-button md-theme="archerInverted" class="md-primary form-button" ng-click="clearNewReport()">Cancel</md-button>
-                    <md-button class="md-primary form-button" ng-click="saveNewReport()" ng-disabled="newReportForm.$invalid || newReportForm.$pristine">Save</md-button>
                 </div>
             </div>
-        </div>
-    </form>
+        </form>
+    </div>
+
     <div class="form-block md-whiteframe-2dp" flex="30%">
         <div ui-grid="unpubReports" class="md-datagrid"></div>
         <div layout="row" class="form-button-set">

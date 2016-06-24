@@ -58,6 +58,7 @@
     background-color: #FFFFFF;
     border-top: 1px solid #cccccc;
     overflow-y: auto;
+    overflow-x: hidden;
     z-index: 90;
 }
 
@@ -156,7 +157,7 @@
 }
 .form-block {
     margin: 8px;
-
+    min-height: 256px !important;
 }
 .form-checkbox {
     font-size: 14px;
