@@ -10,12 +10,24 @@ app.controller('ArcherReportsController', ['$scope', '$rootScope', '$state', '$q
         enableHorizontalScrollbar: 0,
         enableColumnMenus: false,
         minRowsToShow: 30,
+        //rowHeight: 48,
         onRegisterApi: function(gridApi) {
             $scope.gridApi = gridApi;
             gridResizeHandler().then(function () {
                 var elem = angular.element(document.getElementById($scope.gridApi.grid.id + '-grid-container'));
                 $scope.gridDim = elem[0];
             }).catch(function (reason) { console.log(reason); });
+        }
+    };
+    $scope.unpubReports = {
+        data: [],
+        columnDefs: gridData.dailyReportsColumnDefs,
+        enableHorizontalScrollbar: 0,
+        enableColumnMenus: false,
+        minRowsToShow: 5,
+        //rowHeight: 48,
+        onRegisterApi: function(gridApi) {
+            $scope.smallGridApi = gridApi;
         }
     };
 
@@ -27,36 +39,36 @@ app.controller('ArcherReportsController', ['$scope', '$rootScope', '$state', '$q
             $scope.gridApi.core.notifyDataChange(uiGridConstants.dataChange.COLUMN);
         }
     });
+    $scope.hideInactiveProjects = true;
+    $scope.newReport = {};
+    $scope.filterData = {};
 
-    $scope.projects = loadAll();
 
+    $scope.projects = [
+        "Agreewithme","Archer Admin","Aria","B2Lead 2.0.", "BaDoun", "Bankaroo", "Dscopesystems",
+        "Earn", "GetPackage", "HealthOutcome", "Lots Sprint 1", "LottoSend", "Matan iPhone Server", "Medasense",
+        "MHO Support", "MoxiMethod", "MRB+ clones", "Musketeers TM", "Photo app", "PixCell", "Psychographic",
+        "Recruitment System", "room2care", "SAP Kiev", "Schneps", "Spider", "Varian", "Varian WPF", "VOS", "WebLiveView", "Welpy"
+    ];
+    $scope.tasks = ['Analysis', 'Development', 'DevOps', 'Management', 'QA'];
 
-    $scope.querySearch = function (query) {
-        var results = query ? $scope.projects.filter( createFilterFor(query) ) : $scope.projects;
-        var deferred = $q.defer();
-        $timeout(function () {
-            deferred.resolve( results );
-        }, Math.random() * 1000, false);
-
-        return deferred.promise;
+    $scope.getForm = function (form) {
+        $scope.localForm = form;
     };
 
-    function loadAll() {
-        var projects = gridData.projects;
-        return projects.map( function (project) {
-            return {
-                value: project.toLowerCase(),
-                display: project
-            };
-        });
-    }
-
-    function createFilterFor(query) {
-        var lowercaseQuery = angular.lowercase(query);
-        return function filterFn(project) {
-            return (project.value.indexOf(lowercaseQuery) === 0);
-        };
-    }
+    $scope.saveNewReport = function () {
+        $scope.unpubReports.data.push(angular.copy($scope.newReport, {}));
+        $scope.smallGridApi.core.notifyDataChange(uiGridConstants.dataChange.COLUMN);
+        $scope.newReport = {};
+        $scope.localForm.$setPristine();
+    };
+    $scope.clearNewReport = function () {
+        angular.copy({}, $scope.newReport);
+    };
+    $scope.publishReports = function () {
+        angular.extend($scope.dailyReports.data, $scope.unpubReports.data);
+        $scope.unpubReports.data = [];
+    };
 
     function gridResizeHandler () {
         return $q(function (resolve, reject) {

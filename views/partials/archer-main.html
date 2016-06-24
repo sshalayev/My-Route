@@ -14,9 +14,10 @@
         <md-list>
             <div ng-repeat="item in navigation">
                 <md-list-item class="md-primary"
-                              ng-click="navigateTo(item.state)">
+                              ng-click="navigateTo(item.state)"
+                              aria-label="Navigate to {{item.name}}">
 
-                    <nav-item nav-icon="item.icon" nav-state="item.state" nav-text="item.name" aria-label="Navigate to {{item.name}}"></nav-item>
+                    <nav-item nav-icon="item.icon" nav-state="item.state" nav-text="item.name"></nav-item>
                 </md-list-item>
             </div>
         </md-list>
