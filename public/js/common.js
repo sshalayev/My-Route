@@ -42,13 +42,18 @@ app.config(['ngDialogProvider', '$stateProvider', '$urlRouterProvider', '$locati
 
     $mdThemingProvider.theme('redInv')
         .primaryPalette('grey')
-        .accentPalette('orange')
-        .backgroundPalette('red');
+        .accentPalette('red')
+        .warnPalette('orange')
+        .backgroundPalette('red')
+        .dark();
+
 
     $mdThemingProvider.theme('archerInverted')
         .primaryPalette('grey')
         .accentPalette('red')
-        .warnPalette('orange');
+        .warnPalette('orange')
+        .backgroundPalette('green')
+        .dark();
 
     $urlRouterProvider.otherwise('/archer-login/');
 

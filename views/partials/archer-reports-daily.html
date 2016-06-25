@@ -66,12 +66,13 @@
                             <div ng-message="required">Required</div>
                         </div>
                     </md-input-container>
-                </div>
-                <div flex="50%" layout="column"  class="form-block">
                     <md-slider flex md-discrete ng-model="newReport.hours" step="1" min="1" max="8" aria-label="Hours" class="md-primary form-element-margin form-element-font">
                     </md-slider>
+                </div>
+                <div flex="50%" layout="column"  class="form-block">
+
                     <md-input-container class="md-block form-element-margin form-element-font">
-                        <textarea name="body" ng-model="newReport.body" placeholder="Report" md-maxlength="500" rows="6" md-select-on-focus required></textarea>
+                        <textarea name="body" ng-model="newReport.body" placeholder="Report" md-maxlength="500" rows="3" md-select-on-focus required></textarea>
                         <div class="errors" ng-messages="newReportForm.body.$error"  ng-if="newReportForm.body.$dirty && newReportForm.body.$invalid">
                             <div ng-message="required">Report can't be empty</div>
                         </div>
