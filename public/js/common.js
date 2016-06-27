@@ -12,6 +12,7 @@ var app = angular.module('awmApp', [
     'nemLogging',
     'ui-leaflet',
     'ui.grid',
+    'ui.grid.selection',
     'ngMaterial'
 ]);
 
@@ -48,12 +49,11 @@ app.config(['ngDialogProvider', '$stateProvider', '$urlRouterProvider', '$locati
         .dark();
 
 
-    $mdThemingProvider.theme('archerInverted')
+    $mdThemingProvider.theme('bw')
         .primaryPalette('grey')
         .accentPalette('red')
         .warnPalette('orange')
-        .backgroundPalette('green')
-        .dark();
+        .backgroundPalette('grey');
 
     $urlRouterProvider.otherwise('/archer-login/');
 
@@ -98,7 +98,7 @@ app.config(['ngDialogProvider', '$stateProvider', '$urlRouterProvider', '$locati
                 }
             })
                 .state("main.archer.reports", {
-                    template: '<div ui-view class="section-container"></div>',
+                    template: '<div ui-view class="section-container" ap-md-color="{\'background-color\': \'palette-grey-50\'}"></div>',
                     url: "reports/",
                     abstract: true,
                     controller: "ArcherReportsController",

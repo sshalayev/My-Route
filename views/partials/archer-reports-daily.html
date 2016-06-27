@@ -1,42 +1,63 @@
-<div class="md-whiteframe-2dp section-block" flex layout="column">
-    <md-toolbar md-theme="archerInverted"
+<div class="md-whiteframe-2dp section-block" ap-md-color="{'background-color': 'background'}" flex layout="column">
+    <md-toolbar md-theme="bw"
                 class="md-primary md-hue-3 md-datagrid-toolbar"
                 ng-class="{'md-tall': gridWidth < 530}"
                 layout="row"
+                layout-align="start center"
                 layout-wrap>
 
         <month-picker ng-model="filterData.timeframe"></month-picker>
-        <md-input-container class="md-block">
-            <md-select ng-model="filterData.project" placeholder="Filter by project" class="md-primary horizontal-spacing" multiple>
-                <md-option ng-repeat="project in projects" value="{{project}}">
-                    {{project}}
-                </md-option>
-            </md-select>
-        </md-input-container>
-        <md-button class="md-icon-button md-mini md-primary horizontal-spacing" aria-label="Refresh" ng-click="reloadReports">
-            <md-icon class="material-icons">refresh</md-icon>
-        </md-button>
-        <span flex></span>
 
+        <!--<md-select ng-model="filterData.project" placeholder="Filter by project" class="md-primary horizontal-spacing" multiple>
+            <md-option ng-repeat="project in projects" value="{{project}}">
+                {{project}}
+            </md-option>
+        </md-select>
+
+        <md-button class="md-icon-button md-mini md-primary horizontal-spacing" aria-label="Refresh" ng-click="reloadReports">
+            <md-tooltip md-direction="bottom">
+                Refresh
+            </md-tooltip>
+            <md-icon class="material-icons">refresh</md-icon>
+        </md-button>-->
+        <span flex></span>
+        <span class="toolbar-info-label">Reported: </span><span class="toolbar-info-content">124/168</span>
+        <span class="toolbar-info-label">Missing: </span><span class="toolbar-info-content" ap-md-color="{'color': 'primary'}">24</span>
         <md-button class="md-icon-button md-primary" aria-label="Download reports">
+            <md-tooltip md-direction="bottom">
+                Export
+            </md-tooltip>
             <md-icon class="material-icons">get_app</md-icon>
         </md-button>
         <md-button class="md-icon-button md-primary" aria-label="Filters">
+            <md-tooltip md-direction="bottom">
+                Filter
+            </md-tooltip>
             <md-icon class="material-icons">settings</md-icon>
         </md-button>
 
     </md-toolbar>
-    <div ui-grid="dailyReports" class="md-datagrid"></div>
+    <div class="md-datagrid-container">
+        <div class="login-spinner" ng-show="spinners.dailyReportsGrid">
+            <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+        </div>
+        <div ui-grid="dailyReports" ui-grid-selection class="md-datagrid"></div>
+    </div>
+
 </div>
 
-<md-button class="md-fab md-primary md-hue-2 fab-add-report" aria-label="New report">
-    <md-icon class="material-icons">create</md-icon>
+<md-button class="md-fab md-primary md-hue-2 fab-add-report" aria-label="New report" ng-click="toggleBottomPanel()" ng-class="{'fab-add-report-active': showBottomPanel}">
+    <md-tooltip md-direction="bottom" ng-if="!showBottomPanel">
+        Add new report
+    </md-tooltip>
+    <md-icon class="material-icons" ng-if="!showBottomPanel">create</md-icon>
+    <md-icon class="material-icons" ng-if="showBottomPanel">done</md-icon>
 </md-button>
-<div class="bottom-panel md-whiteframe-8dp" layout="column" layout-gt-sm="row">
+<div class="bottom-panel md-whiteframe-8dp" layout="column" layout-gt-sm="row" id="ap-bottom-panel" ng-class="{'bottom-panel-active': showBottomPanel}">
     <div flex class="form-block">
         <form name="newReportForm">
             <div class="bottom-panel-controls" layout="row" layout-xs="column" ng-init="getForm(newReportForm)">
-                <div flex="50%" layout="column" class="form-block">
+                <div flex="50" layout="column" class="form-block">
                     <md-datepicker name="dateString" ng-model="newReport.dateString" md-placeholder="Enter date" class="vertical-spacing" required></md-datepicker>
                     <div class="errors" ng-messages="newReportForm.dateString.$error" ng-if="newReportForm.dateString.$dirty && newReportForm.dateString.$invalid">
                         <div ng-message="valid">Invalid date!</div>
@@ -66,10 +87,9 @@
                             <div ng-message="required">Required</div>
                         </div>
                     </md-input-container>
-                    <md-slider flex md-discrete ng-model="newReport.hours" step="1" min="1" max="8" aria-label="Hours" class="md-primary form-element-margin form-element-font">
-                    </md-slider>
+
                 </div>
-                <div flex="50%" layout="column"  class="form-block">
+                <div flex="50" layout="column"  class="form-block">
 
                     <md-input-container class="md-block form-element-margin form-element-font">
                         <textarea name="body" ng-model="newReport.body" placeholder="Report" md-maxlength="500" rows="3" md-select-on-focus required></textarea>
@@ -77,9 +97,22 @@
                             <div ng-message="required">Report can't be empty</div>
                         </div>
                     </md-input-container>
+                    <md-slider-container class="horizontal-spacing">
+                        <span class="form-element-font">Hours:</span>
+                        <md-slider flex md-discrete
+                                   ng-model="newReport.hours"
+                                   id="hours_slider"
+                                   step="1" min="1" max="8"
+                                   aria-label="Hours"
+                                   class="md-primary form-element-margin form-element-font">
+                        </md-slider>
+                        <md-input-container>
+                            <input flex type="number" ng-model="newReport.hours" aria-label="Hours" aria-controls="hours_slider">
+                        </md-input-container>
+                    </md-slider-container>
                     <div layout="row" class="form-button-set">
                         <span flex></span>
-                        <md-button md-theme="archerInverted" class="md-primary form-button" ng-click="clearNewReport()">Cancel</md-button>
+                        <md-button md-theme="redInv" class="md-primary form-button" ng-click="clearNewReport()">Cancel</md-button>
                         <md-button class="md-primary form-button" ng-click="saveNewReport()" ng-disabled="newReportForm.$invalid || newReportForm.$pristine">Save</md-button>
                     </div>
                 </div>
@@ -87,11 +120,13 @@
         </form>
     </div>
 
-    <div class="form-block md-whiteframe-2dp" flex="30%">
-        <div ui-grid="unpubReports" class="md-datagrid"></div>
-        <div layout="row" class="form-button-set">
+    <div class="form-block form-block-grid md-whiteframe-2dp" flex layout="column">
+        <div class="md-datagrid-container" flex>
+            <div ui-grid="unpubReports" ui-grid-selection class="md-datagrid"></div>
+        </div>
+        <div layout="row" class="form-button-set" flex="none">
             <span flex></span>
-            <md-button md-theme="archerInverted" class="md-primary form-button">Reset</md-button>
+            <md-button md-theme="redInv" class="md-primary form-button">Reset</md-button>
             <md-button class="md-primary form-button" ng-click="publishReports()">Publish</md-button>
         </div>
     </div>
