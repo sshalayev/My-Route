@@ -24,4 +24,9 @@ app.controller('TestController', ['$scope', function ($scope) {
             "employed": false
         }
     ];
+    $scope.pbConfig = {
+        saved: 18,
+        step: 20,
+        goal: 35
+    }
 }]);

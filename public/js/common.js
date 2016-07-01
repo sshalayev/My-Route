@@ -55,6 +55,12 @@ app.config(['ngDialogProvider', '$stateProvider', '$urlRouterProvider', '$locati
         .warnPalette('orange')
         .backgroundPalette('grey');
 
+    $mdThemingProvider.theme('earn')
+        .primaryPalette('green')
+        .accentPalette('orange')
+        .warnPalette('red')
+        .backgroundPalette('grey');
+
     $urlRouterProvider.otherwise('/archer-login/');
 
     $stateProvider

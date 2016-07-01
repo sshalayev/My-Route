@@ -1,13 +1,91 @@
 <div class="test-container">
-    <div class="test-nav">
-        <div class="test-menu" ng-repeat="item in menu_items track by $index">
-            <div class="test-menu__text">{{item.name}}</div>
-        </div>
-    </div>
-    <div class="test-body">
-        <div class="grid-toolbox">Tools should go here</div>
-        <!--<div class="data-grid" id="grid1" ui-grid="{ data: myData }"></div>-->
-        <div v-grid class="grid" id="grid0"></div>
-    </div>
+    <md-content class="md-padding" md-theme="earn" flex>
+        <md-tabs class="md-primary" md-selected="data.selectedIndex">
+            <md-tab id="tab1">
+                <md-tab-label>Old Grid</md-tab-label>
+                <md-tab-body>
+                    <div class="test-nav">
+                        <div class="test-menu" ng-repeat="item in menu_items track by $index">
+                            <div class="test-menu__text">{{item.name}}</div>
+                        </div>
+                    </div>
+                    <div class="test-body">
+                        <div class="grid-toolbox">Tools should go here</div>
+                        <div class="data-grid" id="grid1" ui-grid="{ data: myData }"></div>
+                        <div v-grid class="grid" id="grid0"></div>
+                    </div>
+                </md-tab-body>
+            </md-tab>
+            <md-tab id="tab2">
+                <md-tab-label>Progress by canvas</md-tab-label>
+                <md-tab-body>
+                    <div class="earn-test-body" ap-md-color="{'background-color': 'palette-grey-100'}" md-theme="earn">
+                        <div class="earn-progress-container">
+                            <earn-progress-bar pb-config="pbConfig"></earn-progress-bar>
+                        </div>
+                        <div class="earn-progress-control"></div>
+                    </div>
+
+                </md-tab-body>
+            </md-tab>
+            <md-tab id="tab3">
+                <md-tab-label>Progress by divs</md-tab-label>
+                <md-tab-body>
+                    <div class="md-test-body" ap-md-color="{'background-color': 'palette-grey-100'}" md-theme="earn">
+                        <div class="md-test-card">
+                            <!--<md-progress mdp-config="pg.config" class="md-progress"></md-progress>-->
+                            <div class="md-progress">
+
+                                <div class="md-progress-bg-body"></div>
+                                <div class="md-progress-bg-pointer"></div>
+
+
+                                <div class="md-progress-primary-body"></div>
+                                <div class="md-progress-primary-pointer"></div>
+
+                                <!--<div class="md-progress-grid">
+                                    <div class="md-progress-grid-item"></div>
+                                    <div class="md-progress-grid-item"></div>
+                                    <div class="md-progress-grid-item"></div>
+                                </div>-->
+                            </div>
+                            <div class="md-progress-descr">
+                                <div layout>
+                                    <div flex="10" layout layout-align="center center">
+                                        <span class="md-body-1">width</span>
+                                    </div>
+                                    <md-slider flex min="100" max="600" ng-model="pg.config.width" aria-label="width" id="pg-width" class>
+                                    </md-slider>
+                                    <div flex="20" layout layout-align="center center">
+                                        <input flex type="number" ng-model="pg.config.width" aria-label="width" aria-controls="pg-width">
+                                    </div>
+                                </div>
+                                <div layout>
+                                    <div flex="10" layout layout-align="center center">
+                                        <span class="md-body-1">Height</span>
+                                    </div>
+                                    <md-slider flex ng-model="color.green" min="300" max="1000" aria-label="height" id="pg-height" class="md-accent">
+                                    </md-slider>
+                                    <div flex="20" layout layout-align="center center">
+                                        <input flex type="number" ng-model="pg.config.height" aria-label="height" aria-controls="pg-width">
+                                    </div>
+                                </div>
+                                <div layout>
+                                    <div flex="10" layout layout-align="center center">
+                                        <span class="md-body-1">Steps</span>
+                                    </div>
+                                    <md-slider flex ng-model="pg.config.steps" min="2" max="12" aria-label="steps" id="pg-steps" class="md-accent">
+                                    </md-slider>
+                                    <div flex="20" layout layout-align="center center">
+                                        <input flex type="number" ng-model="pg.config.steps" aria-label="steps" aria-controls="pg-steps">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </md-tab-body>
+            </md-tab>
+
+
 
 </div>

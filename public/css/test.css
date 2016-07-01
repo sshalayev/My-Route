@@ -119,3 +119,104 @@ input:focus {
     opacity: 0;
     transition: all 0.3s ease-out;
 }
+.md-test-body {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right:0;
+}
+.md-test-card {
+    position: relative;
+    margin: 16px;
+    padding: 0;
+    background-color: #FFFFFF;
+    width: 600px;
+    height: 560px;
+    box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12);
+    z-index: 100;
+    border-radius: 2px;
+    display: flex;
+    flex-direction: row;
+}
+.md-progress {
+    position: relative;
+    padding: 0 8px;
+    overflow: hidden;
+    flex: 0 0 232px;
+
+}
+
+.md-progress-bg-body {
+    position: absolute;
+    top: 240px;
+    width: 200px;
+    height: 560px;
+    background-color: #E8F5E9;
+}
+.md-progress-bg-pointer {
+    position: absolute;
+    top: 200px;
+    width: 0;
+    height: 0;
+    border-bottom: 100px solid #E8F5E9;
+    border-left: 100px solid transparent;
+    border-right: 100px solid transparent;
+}
+.md-progress-primary-body {
+    position: absolute;
+    top: 400px;
+    width: 200px;
+    height: 560px;
+    background-color: #4CAF50;
+    box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12);
+    z-index: 100;
+}
+.md-progress-primary-pointer {
+    position: absolute;
+    top: 200px;
+    width: 0;
+    height: 0;
+    border-bottom: 100px solid #4CAF50;
+    border-left: 100px solid transparent;
+    border-right: 100px solid transparent;
+     box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12);
+     z-index: 90;
+ }
+.md-progress-descr {
+    flex: auto;
+    background-color: #ffffff;
+}
+.earn-test-body {
+    position: absolute;
+    top: 56px;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    flex-direction: row;
+}
+.earn-progress-container {
+    flex: 1 1 33%;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    border: 1px dashed red;
+}
+earn-progress-bar {
+    flex: 1 1 auto;
+    border: 1px dashed green;
+}
+.earn-progress-controls {
+    flex: auto;
+    border: 1px dashed;
+}
+.earn-progress-goal {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12);
+}
