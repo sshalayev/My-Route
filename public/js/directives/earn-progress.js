@@ -1,7 +1,7 @@
 /**
  * Created by pastor on 6/30/2016.
  */
-app.directive('earnProgressBar', [function () {
+app.directive('earnProgressBar', ['$window', function ($window) {
     if (!$) { var $ = angular.element; }
     var canvas = document.createElement('canvas');
     var ctx = canvas.getContext("2d");
@@ -23,57 +23,73 @@ app.directive('earnProgressBar', [function () {
         canvas.width = w;
         canvas.height = h;
         var colors = {
-            primary: '#00E676',
-            accent: '#FFC107',
-            bg: '#EEEEEE'
+            primary: '#2fb62f',
+            accent: '#ff8d01',
+            bg: '#FFE0B2'
         };
-
         var goalWidth, goalTop, goalLeft, goalText;
         var goalFAB = $('<div>');
+        var savedText = $('<div>');
+
+        element.append(canvas);
 
         goalFAB.addClass('earn-progress-goal');
         element.append(goalFAB);
 
+        savedText.addClass('earn-progress-saved');
+        element.append(savedText);
+
         scope.$watchCollection('pbConfig', function (config) {
-
             if (config) {
-
-                if (config.saved <= config.step) {
-                    height = (config.saved / config.step) * (h - w);
-                    segments = 4;
-                    redraw(height, segments);
-                    goalWidth = w - 4;
-                    goalTop = (w / 2) - (goalWidth/2);
-                    goalLeft = 4;
-                    goalText = '<p>Get</p><p>$' + stepBonus + '</p>';
-                    console.log(goalWidth);
-
-                } else {
-                    height = (config.saved / config.goal) * (h - w);
-                    segments = 6;
-                    redraw(height, segments);
-                    goalWidth = w - 24;
-                    goalTop = yPos - (goalWidth/2);
-                    goalLeft = (w - goalWidth) / 2;
-                    goalText = '<p>$' + stepBonus + '</p><p><i class="material-icons">done</i></p>';
-                    console.log(goalWidth);
-                }
                 //goalFAB.removeAttr('style');
-                goalFAB.css({
-                    'width': goalWidth + 'px',
-                    'height': goalWidth + 'px',
-                    'top': goalTop + 'px',
-                    'left': goalLeft + 'px'
-                });
-                goalFAB.html(goalText);
+                recalc(config.saved, config.step, config.goal);
+                redraw(height, segments);
             }
         });
+        $window.onresize = function (e) {
+            w = element[0].offsetWidth;
+            h = element[0].offsetHeight;
+            console.log('resize event fired: ' + w);
+            canvas.height = h;
+            canvas.width = w;
+            recalc(scope.pbConfig.saved, scope.pbConfig.step, scope.pbConfig.goal);
+            redraw(height, segments);
+        };
 
         function redraw (height, segments) {
             ctx.clearRect(0, 0, w, h);
             drawArrow(w, h, (h - w), colors.bg);
             drawArrow(w, h, height, colors.primary);
             drawStripes(w, h, segments);
+            goalFAB.css({
+                'width': goalWidth + 'px',
+                'height': goalWidth + 'px',
+                'top': goalTop + 'px',
+                'left': goalLeft + 'px'
+            });
+            goalFAB.html(goalText);
+            savedText.html('<span>$' + scope.pbConfig.saved + '</span><span>saved</span>');
+        }
+        function recalc (saved, step, goal) {
+
+            if (saved <= step) {
+                height = (saved / step) * (h - w);
+                segments = 4;
+                goalWidth = w - 4;
+                goalLeft = (w - goalWidth) / 2;
+                goalTop = (w / 2) - (goalWidth/2);
+                goalText = '<span>Get</span><span>$' + stepBonus + '</span>';
+                console.log(goalWidth);
+
+            } else {
+                height = (saved / goal) * (h - w);
+                segments = 6;
+                goalWidth = w - 24;
+                goalLeft = (w - goalWidth) / 2;
+                goalTop = w + (height / 2) - (goalWidth/2);
+                goalText = '<span>$' + stepBonus + '</span><i class="material-icons">done</i>';
+                console.log(goalWidth);
+            }
         }
     }
 
@@ -93,7 +109,7 @@ app.directive('earnProgressBar', [function () {
     function drawStripes (w, h, segments) {
         var seg = (h - w) / segments;
         ctx.save();
-        ctx.strokeStyle = 'rgba(1, 1, 1, 0.7)';
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
         ctx.lineWidth = 2;
 
         for (var i = 1; i < segments; i++) {

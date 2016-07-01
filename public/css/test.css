@@ -189,7 +189,7 @@ input:focus {
 }
 .earn-test-body {
     position: absolute;
-    top: 56px;
+    top: 0;
     left: 0;
     bottom: 0;
     right: 0;
@@ -197,19 +197,21 @@ input:focus {
     flex-direction: row;
 }
 .earn-progress-container {
-    flex: 1 1 33%;
+    flex: 0.33;
+    min-width: 100px;
+    max-width: 320px;
     display: flex;
     flex-direction: column;
-    padding: 16px;
-    border: 1px dashed red;
 }
 earn-progress-bar {
-    flex: 1 1 auto;
-    border: 1px dashed green;
-}
-.earn-progress-controls {
+    margin: 16px;
     flex: auto;
-    border: 1px dashed;
+    position: relative;
+}
+.earn-progress-control {
+    min-width: 220px;
+    flex: auto;
+    margin: 16px;
 }
 .earn-progress-goal {
     position: absolute;
@@ -217,6 +219,24 @@ earn-progress-bar {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    background-color: #ff8d01;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 16px;
+    border-radius: 100%;
     z-index: 100;
     box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12);
+}
+.earn-progress-saved {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    top: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding-bottom: 8px;
+    color: rgba(255, 255, 255, 0.8);
+    z-index: 90;
 }
